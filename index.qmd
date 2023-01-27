@@ -12,3 +12,420 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 1 + 1
 
 ```
+
+# Setup
+
+## Pakete laden
+
+```{r}
+library(tidyverse)
+library(tokenizers)
+library(tidyverse)
+library(tidytext)
+library(hcandersenr)
+library(SnowballC)  
+library(lsa)  
+library(easystats)  
+library(textclean)  
+library(tidyverse)
+library(quanteda)
+library(wordcloud)
+library(SnowballC)
+library(tidyverse)
+library(easystats)
+library(tidymodels)
+library(tidytext)
+library(textrecipes)
+library(lsa) 
+library(discrim)  
+library(naivebayes)
+library(tictoc)  
+library(fastrtext)  
+library(remoji)  
+library(tokenizers)  
+library(pradadata)
+```
+
+## Daten laden
+
+```{r}
+d_raw <- 
+  data_read("C:/Users/marku/Desktop/GermEval-2018-Data-master/germeval2018.training.txt",
+         header = FALSE)
+```
+
+```{r}
+names(d_raw) <- c("text", "c1", "c2")
+```
+
+```{r}
+d_raw %>% 
+  count(c1)
+```
+
+```{r}
+d_raw %>% 
+  count(c2)
+```
+
+```{r}
+d_raw %>% 
+  filter(c1 == "OTHER", c2 == "OTHER") %>% 
+  nrow() / nrow(d_raw)
+```
+
+```{r}
+d_raw %>% 
+  filter(c1 != "OTHER", c2 != "OTHER") %>% 
+  nrow() / nrow(d_raw)
+```
+
+```{r}
+d1 <-
+  d_raw %>% 
+  mutate(id = as.character(1:nrow(.)))
+```
+
+# Feature Engineering
+
+## Textlänge
+
+```{r}
+d2 <-
+  d1 %>% 
+  mutate(text_length = str_length(text))
+
+head(d2)
+```
+
+## Sentimentanalyse
+
+```{r}
+sentiws <- read_csv("https://osf.io/x89wq/?action=download")
+```
+
+```{r}
+d2_long <-
+  d2 %>% 
+  unnest_tokens(input = text, output = token)
+
+head(d2_long)
+```
+
+```{r}
+d2_long_senti <- 
+  d2_long %>%  
+  inner_join(sentiws %>% select(-inflections), by = c("token" = "word"))
+
+head(d2_long)
+```
+
+```{r}
+d2_sentis <-
+  d2_long_senti %>% 
+  group_by(id, neg_pos) %>% 
+  summarise(senti_avg = mean(value))
+
+head(d2_sentis)
+```
+
+```{r}
+d2_sentis_wide <-
+  d2_sentis %>% 
+  pivot_wider(names_from = "neg_pos", values_from = "senti_avg")
+
+d2_sentis_wide %>% head()
+```
+
+```{r}
+d3 <-
+  d2 %>% 
+  full_join(d2_sentis_wide)
+
+head(d3)
+```
+
+## Profanities
+
+
+```{r}
+profanities1 <- data_read("https://raw.githubusercontent.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/master/de", format = ",", header = FALSE)
+```
+
+```{r}
+profanities2 <- 
+  schimpfwoerter %>% 
+  mutate_all(str_to_lower) %>% 
+  rename(V1 = "word")
+```
+
+```{r}
+profanities <-
+  profanities1 %>% 
+  bind_rows(profanities2) %>% 
+  distinct()
+
+nrow(profanities)
+```
+Distinct Funktion beseitigt die doppelten Schimpfwörter
+```{r}
+d_profanity <- 
+d2_long %>% 
+  select(id, token) %>% 
+  mutate(profanity = token %in% profanities$word)
+```
+
+```{r}
+d_profanity %>% 
+  count(profanity)
+```
+
+```{r}
+d_profanity2 <-
+  d_profanity %>% 
+  group_by(id) %>% 
+  summarise(profanity_n = sum(profanity))
+
+head(d_profanity2)
+```
+
+```{r}
+d_main <-
+  d3 %>% 
+  full_join(d_profanity2)
+```
+
+## Emojis
+
+```{r}
+emj <- emoji(list_emoji(), pad = FALSE)
+
+head(emj)
+```
+
+```{r}
+wild_emojis <- 
+  c(
+    emoji(find_emoji("gun")),
+    emoji(find_emoji("bomb")),
+    emoji(find_emoji("fist")),
+    emoji(find_emoji("knife"))[1],
+    emoji(find_emoji("ambulance")),
+    emoji(find_emoji("fist")),
+    emoji(find_emoji("skull")),
+    "☠️",     "🗑",       "😠",    "👹",    "💩" ,
+    "🖕",    "👎️",
+    emoji(find_emoji("middle finger")),    "😡",    "🤢",    "🤮",  
+    "😖",    "😣",    "😩",    "😨",    "😝",    "😳",    "😬",    "😱",    "😵",
+       "😤",    "🤦‍♀️",    "🤦‍"
+  )
+
+```
+
+```{r}
+wild_emojis_df <-
+  tibble(emoji = wild_emojis)
+
+save(wild_emojis_df, file = "C:/Users/marku/Desktop/wild_emojis.RData")
+```
+
+## Stemming
+
+# Workflows
+
+## Data Split
+
+```{r}
+d_split <- initial_split(d1, strata = c1)
+
+d_train <- training(d_split)
+d_test <- testing(d_split)
+```
+
+## Rezept 1
+
+```{r}
+rec1 <- recipe(c1 ~ ., data = select(d_train, text, c1, id)) %>%
+  update_role(id, new_role = "id") %>%
+  step_tokenize(text) %>%
+  step_stopwords(text, language = "de", stopword_source = "snowball") %>%
+  step_stem(text) %>%
+  step_tokenfilter(text, max_tokens = 1e2) %>%
+  step_tfidf(text) %>%
+  step_normalize(all_numeric_predictors())
+
+rec1
+```
+
+```{r}
+rec1_prep <- prep(rec1)
+```
+
+```{r}
+rec1_bake <- bake(rec1_prep, new_data = NULL)
+
+head(rec1_bake)
+```
+
+## Model 1
+
+```{r}
+nb_spec <- naive_Bayes() %>%
+  set_mode("classification") %>%
+  set_engine("naivebayes")
+
+nb_spec
+```
+
+```{r}
+set.seed(13)
+cv_folds <- vfold_cv(d_train)
+```
+
+## workflow 1
+
+```{r}
+wf1 <- workflow() %>%
+  add_recipe(rec1) %>%
+  add_model(nb_spec)
+
+wf1
+```
+
+### Fit
+
+```{r}
+fit1 <- fit_resamples(wf1, cv_folds, control = control_resamples(save_pred = TRUE))
+```
+
+### Performance
+
+```{r}
+wf1_performance <- collect_metrics(fit1)
+
+wf1_performance
+```
+
+```{r}
+wf_preds <- collect_predictions(fit1)
+
+wf_preds %>%
+  group_by(id) %>%
+  roc_curve(truth = c1, .pred_OFFENSE) %>%
+  autoplot()
+
+```
+
+## Nullmodell
+
+```{r}
+null_classification <- parsnip::null_model() %>%
+  set_engine("parsnip") %>%
+  set_mode("classification")
+```
+
+### Resampling
+
+```{r}
+null_rs <- workflow() %>%
+  add_recipe(rec1) %>%
+  add_model(null_classification) %>%
+  fit_resamples(cv_folds)
+```
+
+### Performance
+
+```{r}
+null_rs %>%
+  collect_metrics()
+
+show_best(null_rs)
+```
+
+## Workflow 2
+
+```{r}
+doParallel::registerDoParallel()
+
+cores <- parallel::detectCores(logical = TRUE)
+
+lasso_spec <- logistic_reg(penalty = tune(), mixture = 1) %>%
+  set_mode("classification") %>%
+  set_engine("glmnet", num.threads = cores)
+
+lasso_spec
+```
+
+```{r}
+lambda_grid <- grid_regular(penalty(), levels = 30)
+```
+
+```{r}
+wf2 <- workflow() %>%
+  add_recipe(rec1) %>%
+  add_model(lasso_spec)
+
+wf2
+```
+
+### Tune & Fit
+
+```{r}
+set.seed(2246)
+
+tic()
+
+fit2 <- tune_grid(wf2, cv_folds, grid = lambda_grid, control = control_resamples(save_pred = TRUE))
+
+toc()
+
+fit2
+```
+
+### Performance
+
+```{r}
+collect_metrics(fit2) %>%
+  filter(.metric == "roc_auc") %>%
+  slice_max(mean, n = 7)
+```
+
+```{r}
+autoplot(fit2)
+```
+
+```{r}
+fit2 %>%
+  show_best("roc_auc")
+```
+
+```{r}
+chosen_auc <- fit2 %>%
+  select_by_one_std_err(metric = "roc_auc", -penalty)
+```
+
+### Finalize
+
+```{r}
+wf2_final <- finalize_workflow(wf2, chosen_auc)
+
+wf2_final
+```
+
+```{r}
+fit2_final_train <- fit(wf2_final, d_train)
+```
+
+```{r}
+fit2_final_train %>%
+  extract_fit_parsnip() %>%
+  tidy() %>%
+  arrange(-abs(estimate)) %>%
+  head()
+```
+
+```{r}
+fit2_final_test <- last_fit(wf2_final, d_split)
+
+collect_metrics(fit2_final_test)
+```
