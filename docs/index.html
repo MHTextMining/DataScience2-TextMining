@@ -145,12 +145,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">
+    <a class="nav-link" href="./pipelines.qmd">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html">
  <span class="menu-text">Informationen</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="./pipelines.qmd">
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -239,6 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <p>This is a Quarto website.</p>
 <p><em>Wie schnell bist du?</em></p>
+<p><span class="citation" data-cites="Pipelines">@Pipelines</span></p>
 <section id="setup" class="level1">
 <h1>Setup</h1>
 <section id="pakete-laden" class="level2">
@@ -328,7 +333,7 @@ See https://quanteda.io for tutorials and examples.</code></pre>
 ✖ dials::smoothness()      masks datawizard::smoothness()
 ✖ yardstick::spec()        masks readr::spec()
 ✖ recipes::step()          masks stats::step()
-• Use tidymodels_prefer() to resolve common conflicts.</code></pre>
+• Learn how to get started at https://www.tidymodels.org/start/</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textrecipes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -742,21 +747,21 @@ Centering and scaling for all_numeric_predictors()</code></pre>
 <span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rec1_bake)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 102
-  id    c1      tfidf_text__macmik tfidf_text_2 tfidf_text_ab tfidf_text_afd
-  &lt;fct&gt; &lt;fct&gt;                &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
-1 5     OFFENSE             -0.136      -0.0922        -0.104         -0.159
-2 7     OFFENSE             -0.136      -0.0922        -0.104         -0.159
-3 9     OFFENSE             -0.136      -0.0922        -0.104         12.3  
-4 10    OFFENSE             -0.136      -0.0922        -0.104         -0.159
-5 17    OFFENSE             -0.136      -0.0922        -0.104         -0.159
-6 27    OFFENSE             -0.136      -0.0922        -0.104         -0.159
-# … with 96 more variables: tfidf_text_amp &lt;dbl&gt;, tfidf_text_anna_iina &lt;dbl&gt;,
+  id    c1      tfidf_text__macmik tfidf_text_ab tfidf_text_afd tfidf_text_amp
+  &lt;fct&gt; &lt;fct&gt;                &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+1 5     OFFENSE             -0.138        -0.102         -0.157         -0.121
+2 7     OFFENSE             -0.138        -0.102         -0.157         -0.121
+3 9     OFFENSE             -0.138        -0.102          5.90          -0.121
+4 10    OFFENSE             -0.138        -0.102         -0.157         -0.121
+5 12    OFFENSE             -0.138        -0.102         -0.157         -0.121
+6 17    OFFENSE             -0.138        -0.102         -0.157         -0.121
+# … with 96 more variables: tfidf_text_anna_iina &lt;dbl&gt;,
 #   tfidf_text_athinamala &lt;dbl&gt;, tfidf_text_beim &lt;dbl&gt;,
 #   tfidf_text_besser &lt;dbl&gt;, tfidf_text_bild &lt;dbl&gt;, tfidf_text_cdu &lt;dbl&gt;,
-#   tfidf_text_charlie_silv &lt;dbl&gt;, tfidf_text_csu &lt;dbl&gt;, tfidf_text_d &lt;dbl&gt;,
-#   tfidf_text_dafür &lt;dbl&gt;, tfidf_text_dank &lt;dbl&gt;, tfidf_text_dass &lt;dbl&gt;,
-#   tfidf_text_deutsch &lt;dbl&gt;, tfidf_text_deutschen &lt;dbl&gt;,
-#   tfidf_text_deutschland &lt;dbl&gt;, tfidf_text_dumm &lt;dbl&gt;, …</code></pre>
+#   tfidf_text_charlie_silv &lt;dbl&gt;, tfidf_text_d &lt;dbl&gt;, tfidf_text_dafür &lt;dbl&gt;,
+#   tfidf_text_dank &lt;dbl&gt;, tfidf_text_dass &lt;dbl&gt;, tfidf_text_deutsch &lt;dbl&gt;,
+#   tfidf_text_deutschen &lt;dbl&gt;, tfidf_text_deutschland &lt;dbl&gt;,
+#   tfidf_text_dumm &lt;dbl&gt;, tfidf_text_eigentlich &lt;dbl&gt;, …</code></pre>
 </div>
 </div>
 </section>
@@ -827,8 +832,8 @@ Computational engine: naivebayes </code></pre>
 <pre><code># A tibble: 2 × 6
   .metric  .estimator  mean     n std_err .config             
   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
-1 accuracy binary     0.660    10 0.00835 Preprocessor1_Model1
-2 roc_auc  binary     0.607    10 0.00831 Preprocessor1_Model1</code></pre>
+1 accuracy binary     0.664    10 0.0112  Preprocessor1_Model1
+2 roc_auc  binary     0.608    10 0.00932 Preprocessor1_Model1</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -958,7 +963,7 @@ Computational engine: glmnet </code></pre>
 <span id="cb107-6"><a href="#cb107-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb107-7"><a href="#cb107-7" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>21.89 sec elapsed</code></pre>
+<pre><code>22 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>fit2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -987,20 +992,20 @@ Computational engine: glmnet </code></pre>
 <span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"roc_auc"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(mean, <span class="at">n =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 24 × 7
+<pre><code># A tibble: 22 × 7
     penalty .metric .estimator  mean     n std_err .config              
       &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
- 1 3.86e- 3 roc_auc binary     0.650    10 0.00618 Preprocessor1_Model23
- 2 1.74e- 3 roc_auc binary     0.650    10 0.00639 Preprocessor1_Model22
- 3 7.88e- 4 roc_auc binary     0.648    10 0.00704 Preprocessor1_Model21
- 4 8.53e- 3 roc_auc binary     0.647    10 0.00580 Preprocessor1_Model24
- 5 3.56e- 4 roc_auc binary     0.646    10 0.00701 Preprocessor1_Model20
- 6 1.61e- 4 roc_auc binary     0.646    10 0.00717 Preprocessor1_Model19
- 7 1   e-10 roc_auc binary     0.646    10 0.00744 Preprocessor1_Model01
- 8 2.21e-10 roc_auc binary     0.646    10 0.00744 Preprocessor1_Model02
- 9 4.89e-10 roc_auc binary     0.646    10 0.00744 Preprocessor1_Model03
-10 1.08e- 9 roc_auc binary     0.646    10 0.00744 Preprocessor1_Model04
-# … with 14 more rows</code></pre>
+ 1 3.86e- 3 roc_auc binary     0.650    10 0.00699 Preprocessor1_Model23
+ 2 8.53e- 3 roc_auc binary     0.650    10 0.00613 Preprocessor1_Model24
+ 3 1.74e- 3 roc_auc binary     0.650    10 0.00677 Preprocessor1_Model22
+ 4 7.88e- 4 roc_auc binary     0.649    10 0.00685 Preprocessor1_Model21
+ 5 1   e-10 roc_auc binary     0.649    10 0.00687 Preprocessor1_Model01
+ 6 2.21e-10 roc_auc binary     0.649    10 0.00687 Preprocessor1_Model02
+ 7 4.89e-10 roc_auc binary     0.649    10 0.00687 Preprocessor1_Model03
+ 8 1.08e- 9 roc_auc binary     0.649    10 0.00687 Preprocessor1_Model04
+ 9 2.40e- 9 roc_auc binary     0.649    10 0.00687 Preprocessor1_Model05
+10 5.30e- 9 roc_auc binary     0.649    10 0.00687 Preprocessor1_Model06
+# … with 12 more rows</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1014,13 +1019,13 @@ Computational engine: glmnet </code></pre>
 <span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_best</span>(<span class="st">"roc_auc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 7
-   penalty .metric .estimator  mean     n std_err .config              
-     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
-1 0.00386  roc_auc binary     0.650    10 0.00618 Preprocessor1_Model23
-2 0.00174  roc_auc binary     0.650    10 0.00639 Preprocessor1_Model22
-3 0.000788 roc_auc binary     0.648    10 0.00704 Preprocessor1_Model21
-4 0.00853  roc_auc binary     0.647    10 0.00580 Preprocessor1_Model24
-5 0.000356 roc_auc binary     0.646    10 0.00701 Preprocessor1_Model20</code></pre>
+       penalty .metric .estimator  mean     n std_err .config              
+         &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+1 0.00386      roc_auc binary     0.650    10 0.00699 Preprocessor1_Model23
+2 0.00853      roc_auc binary     0.650    10 0.00613 Preprocessor1_Model24
+3 0.00174      roc_auc binary     0.650    10 0.00677 Preprocessor1_Model22
+4 0.000788     roc_auc binary     0.649    10 0.00685 Preprocessor1_Model21
+5 0.0000000001 roc_auc binary     0.649    10 0.00687 Preprocessor1_Model01</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1094,11 +1099,11 @@ Attache Paket: 'Matrix'</code></pre>
   term              estimate penalty
   &lt;chr&gt;                &lt;dbl&gt;   &lt;dbl&gt;
 1 (Intercept)          0.699 0.00853
-2 tfidf_text_merkel   -0.234 0.00853
-3 tfidf_text_dumm     -0.231 0.00853
-4 tfidf_text_lbr      -0.182 0.00853
-5 tfidf_text_moslem   -0.162 0.00853
-6 tfidf_text_dank      0.111 0.00853</code></pre>
+2 tfidf_text_merkel   -0.225 0.00853
+3 tfidf_text_dumm     -0.211 0.00853
+4 tfidf_text_lbr      -0.151 0.00853
+5 tfidf_text_moslem   -0.110 0.00853
+6 tfidf_text_islam    -0.103 0.00853</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1109,8 +1114,8 @@ Attache Paket: 'Matrix'</code></pre>
 <pre><code># A tibble: 2 × 4
   .metric  .estimator .estimate .config             
   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
-1 accuracy binary         0.686 Preprocessor1_Model1
-2 roc_auc  binary         0.661 Preprocessor1_Model1</code></pre>
+1 accuracy binary         0.687 Preprocessor1_Model1
+2 roc_auc  binary         0.664 Preprocessor1_Model1</code></pre>
 </div>
 </div>
 

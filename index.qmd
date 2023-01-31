@@ -8,7 +8,7 @@ This is a Quarto website.
 
 *Wie schnell bist du?*
 
-
+@Pipelines
 
 # Setup
 
@@ -144,7 +144,6 @@ head(d3)
 
 ## Profanities
 
-
 ```{r}
 profanities1 <- data_read("https://raw.githubusercontent.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/master/de", format = ",", header = FALSE)
 ```
@@ -164,7 +163,9 @@ profanities <-
 
 nrow(profanities)
 ```
+
 Distinct Funktion beseitigt die doppelten Schimpfwörter
+
 ```{r}
 d_profanity <- 
 d2_long %>% 

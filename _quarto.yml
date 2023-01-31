@@ -6,9 +6,10 @@ website:
   title: "Datascience2 - TextMining"
   navbar:
     left:
-      - href: index.qmd
+      - href: pipelines.qmd
         text: Home
       - about.qmd
+      - pipelines.qmd
 
 format:
   html:
