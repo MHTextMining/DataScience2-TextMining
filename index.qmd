@@ -1,17 +1,14 @@
 ---
-title: "Datascience2 - TextMining"
+title: "Analysebericht"
+author: "Markus Häfner"
+date: "10.02.2023"
 ---
 
 This is a Quarto website.
 
 *Wie schnell bist du?*
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
-```{r}
-1 + 1
-
-```
 
 # Setup
 
@@ -282,7 +279,7 @@ set.seed(13)
 cv_folds <- vfold_cv(d_train)
 ```
 
-## workflow 1
+## Workflow 1
 
 ```{r}
 wf1 <- workflow() %>%

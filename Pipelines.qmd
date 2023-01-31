@@ -1,0 +1,11 @@
+---
+title: "Pipelines"
+---
+
+|               |                                  |
+|---------------|----------------------------------|
+| `Modul`       | Data Science 2                   |
+| `Datum`       | 10.02.2023                       |
+| `Autor`       | Markus Häfner                    |
+| `Institution` | Hochschule Ansbach               |
+| `Betreuer`    | Prof. Dr. habil. Sebastian Sauer |
