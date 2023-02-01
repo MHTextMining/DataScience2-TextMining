@@ -2,17 +2,17 @@
 title: "Analysebericht"
 author: "Markus Häfner"
 date: "10.02.2023"
+format:
+  html:
+    toc: true
 ---
 
-This is a Quarto website.
-
-*Wie schnell bist du?*
 
 # Setup
 
 ## Pakete laden
 
-```{r}
+```{r, results='hide', warning=FALSE}
 library(tidyverse)
 library(tokenizers)
 library(tidyverse)
@@ -39,6 +39,7 @@ library(fastrtext)
 library(remoji)  
 library(tokenizers)  
 library(pradadata)
+library(knitr)
 ```
 
 ## Training - Data
@@ -50,7 +51,7 @@ d_train <-
   data_read("data/germeval2018.training.txt",
          header = FALSE)
 
-head(d_train)
+kable(head(d_train))
 ```
 ### Renaming Columns
 
@@ -91,91 +92,104 @@ d_test_id <- d_test %>%
 
 # Exploratory data analysis
 
+## Classifier 1
+
 ```{r}
-#d_raw %>% 
-  #count(c1)
+kable(d_train_id %>% 
+  count(c1))
+```
+## Classifier 1
+```{r}
+kable(d_train_id %>% 
+  count(c2))
 ```
 
 ```{r}
-#d_raw %>% 
-  #count(c2)
+d_train %>% 
+  filter(c1 == "OTHER" & c2 == "OTHER") %>%
+  nrow() / nrow(d_train)
+```
+```{r}
+d_train %>% 
+  filter(c1 == "OFFENSE" & c2 == "ABUSE") %>%
+  nrow() / nrow(d_train)
 ```
 
 ```{r}
-#d_raw %>% 
-  #filter(c1 == "OTHER", c2 == "OTHER") %>% 
-  #nrow() / nrow(d_raw)
+d_train %>% 
+  filter(c1 == "OFFENSE" & c2 == "INSULT") %>%
+  nrow() / nrow(d_train)
 ```
 
 ```{r}
-#d_raw %>% 
-  #filter(c1 != "OTHER", c2 != "OTHER") %>% 
-  #nrow() / nrow(d_raw)
+d_train %>% 
+  filter(c1 == "OFFENSE" & c2 == "PROFANITY") %>%
+  nrow() / nrow(d_train)
 ```
 
 ```{r}
-#d1 <-
-  #d_raw %>% 
-  #mutate(id = as.character(1:nrow(.)))
+d_train %>% 
+  filter(c1 == "OFFENSE" & c2 == "OTHER") %>%
+  nrow() / nrow(d_train)
 ```
+-> Every tweet that has been classified as "Offense" is categorizied in either of the three categories PROFANITY, ABUSE or INSULT
+
 
 # Feature Engineering
 
-## Textlänge
+## Adding Text_length as a variable
 
 ```{r}
-#d2 <-
-  #d1 %>% 
-  #mutate(text_length = str_length(text))
+d_train_tl <-
+  d_train_id %>% 
+  mutate(text_length = str_length(text))
 
-#head(d2)
+kable(head(d_train_tl))
 ```
 
-## Sentimentanalyse
+## Sentiment analysis
 
 ```{r}
-#sentiws <- read_csv("https://osf.io/x89wq/?action=download")
-```
-
-```{r}
-#d2_long <-
-  #d2 %>% 
-  #unnest_tokens(input = text, output = token)
-
-#head(d2_long)
+sentiments <- read_csv("data/sentiments.csv")
 ```
 
 ```{r}
-#d2_long_senti <- 
-  #d2_long %>%  
-  #inner_join(sentiws %>% select(-inflections), by = c("token" = "word"))
+d_train_unnest <-
+  d_train_tl %>% 
+  unnest_tokens(input = text, output = token)
 
-#head(d2_long)
+kable(head(d_train_unnest))
 ```
 
 ```{r}
-#d2_sentis <-
-  #d2_long_senti %>% 
-  #group_by(id, neg_pos) %>% 
-  #summarise(senti_avg = mean(value))
+d_train_senti <- 
+  d_train_unnest %>%  
+  inner_join(sentiments %>% select(-inflections), by = c("token" = "word"))
 
-#head(d2_sentis)
+kable(head(d_train_senti))
 ```
 
 ```{r}
-#d2_sentis_wide <-
-  #d2_sentis %>% 
-  #pivot_wider(names_from = "neg_pos", values_from = "senti_avg")
-
-#d2_sentis_wide %>% head()
+train_sentiments <-
+  d_train_senti %>% 
+  group_by(id, neg_pos) %>% 
+  summarise(mean = mean(value))
 ```
 
 ```{r}
-#d3 <-
-  #d2 %>% 
- # full_join(d2_sentis_wide)
+train_sentiments_spread <-
+  train_sentiments %>% 
+  pivot_wider(names_from = "neg_pos", values_from = "mean")
 
-#head(d3)
+kable(head(train_sentiments_spread))
+```
+
+```{r}
+d_train_senti <-
+  d_train_tl %>% 
+  full_join(train_sentiments_spread)
+
+kable(head(d_train_senti))
 ```
 
 ## Profanities
