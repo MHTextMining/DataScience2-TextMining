@@ -12,7 +12,7 @@ format:
 
 ## Pakete laden
 
-```{r, results='hide', warning=FALSE}
+```{r, results='hide', warning=FALSE, message=FALSE}
 library(tidyverse)
 library(tokenizers)
 library(tidyverse)
