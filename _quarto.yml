@@ -6,7 +6,7 @@ website:
   title: "Datascience2 - TextMining"
   navbar:
     left:
-      - href: pipelines.qmd
+      - href: index.qmd
         text: Home
       - about.qmd
       - pipelines.qmd
