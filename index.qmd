@@ -98,7 +98,7 @@ d_test_id <- d_test %>%
 kable(d_train_id %>% 
   count(c1))
 ```
-## Classifier 1
+## Classifier 2
 ```{r}
 kable(d_train_id %>% 
   count(c2))
@@ -137,7 +137,7 @@ d_train %>%
 
 # Feature Engineering
 
-## Adding Text_length as a variable
+### Adding Text_length as a variable
 
 ```{r}
 d_train_tl <-
@@ -195,139 +195,248 @@ kable(head(d_train_senti))
 ## Profanities
 
 ```{r}
-#profanities1 <- data_read("https://raw.githubusercontent.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/master/de", format = ",", header = FALSE)
+profanities1 <- 
+  data_read("data/profanities.txt",
+         header = FALSE)
 ```
 
 ```{r}
-#profanities2 <- 
- # schimpfwoerter %>% 
-#  mutate_all(str_to_lower) %>% 
-#  rename(V1 = "word")
+ profanities2 <- 
+   schimpfwoerter %>% 
+   mutate_all(str_to_lower) %>% 
+   rename(V1 = "word")
 ```
 
 ```{r}
-#profanities <-
-#  profanities1 %>% 
-#  bind_rows(profanities2) %>% 
-#  distinct()
+profanities3 <- 
+  data_read("data/profanities_en.txt",
+         header = FALSE)
+```
+ from http://www.cs.cmu.edu/~biglou/resources/
+```{r}
+profanities <-
+  profanities1 %>% 
+  bind_rows(profanities2) %>%
+  bind_rows(profanities3) %>%
+  distinct()
 
-#nrow(profanities)
+nrow(profanities)
 ```
 
 Distinct Funktion beseitigt die doppelten Schimpfwörter
 
 ```{r}
-#d_profanity <- 
-#d2_long %>% 
-#  select(id, token) %>% 
-#  mutate(profanity = token %in% profanities$word)
+d_train_prof <- 
+d_train_unnest %>% 
+  select(id, token) %>% 
+  mutate(profanity = token %in% profanities$V1)
 ```
 
 ```{r}
-#d_profanity %>% 
-#  count(profanity)
+kable(d_train_prof %>% 
+  count(profanity))
 ```
 
 ```{r}
-#d_profanity2 <-
-#  d_profanity %>% 
- # group_by(id) %>% 
-#  summarise(profanity_n = sum(profanity))
+d_train_prof %>% 
+  group_by(id) %>% 
+  summarise(profanity_n = sum(profanity))
 
-#head(d_profanity2)
+kable(head(d_train_prof))
 ```
 
 ```{r}
-#d_main <-
- # d3 %>% 
- # full_join(d_profanity2)
+d_train2 <-
+  d_train_senti %>% 
+  full_join(d_train_prof)
 ```
 
 ## Emojis
 
 ```{r}
-#emj <- emoji(list_emoji(), pad = FALSE)
+emj <- emoji(list_emoji(), pad = FALSE)
 
-#head(emj)
+head(emj)
 ```
 
 ```{r}
-#wild_emojis <- 
-#  c(
-#    emoji(find_emoji("gun")),
- #   emoji(find_emoji("bomb")),
-#    emoji(find_emoji("fist")),
- #   emoji(find_emoji("knife"))[1],
- #   emoji(find_emoji("ambulance")),
- #   emoji(find_emoji("fist")),
- #   emoji(find_emoji("skull")),
-  #  "☠️",     "🗑",       "😠",    "👹",    "💩" ,
-  #  "🖕",    "👎️",
-  #  emoji(find_emoji("middle finger")),    "😡",    "🤢",    "🤮",  
- #   "😖",    "😣",    "😩",    "😨",    "😝",    "😳",    "😬",    "😱",    "😵",
-  #     "😤",    "🤦‍♀️",    "🤦‍"
-#  )
+wild_emojis <- 
+  c(
+    emoji(find_emoji("gun")),
+    emoji(find_emoji("bomb")),
+    emoji(find_emoji("fist")),
+    emoji(find_emoji("knife"))[1],
+    emoji(find_emoji("ambulance")),
+    emoji(find_emoji("fist")),
+    emoji(find_emoji("skull")),
+    "☠️",     "🗑",       "😠",    "👹",    "💩" ,
+    "🖕",    "👎️",
+    emoji(find_emoji("middle finger")),    "😡",    "🤢",    "🤮",  
+    "😖",    "😣",    "😩",    "😨",    "😝",    "😳",    "😬",    "😱",    "😵",
+       "😤",    "🤦‍♀️",    "🤦‍"
+  )
 
 ```
 
 ```{r}
-#wild_emojis_df <-
- # tibble(emoji = wild_emojis)
+wild_emojis_df <-
+  tibble(emoji = wild_emojis)
 
-#save(wild_emojis_df, file = "C:/Users/marku/Desktop/wild_emojis.RData")
+save(wild_emojis_df, file = "data/wild_emojis.RData")
 ```
 
 ## Stemming
 
-# Workflows
+# Recipes
 
-## Data Split
+## Recipe 0
+
+As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a "clean" text predictions. For this we use the following methods: Removal of german stop words, word stemming  and normalization of all predictors. Furthermore we apply step_tfidf, which results in an inverse Document Frequency of our tokens.
+
+### Defining recipe 0
 
 ```{r}
-#d_split <- initial_split(d1, strata = c1)
+rec0 <- recipe(c1 ~ ., data = select(d_train2, text, c1, id)) %>%
+  update_role(id, new_role = "id") %>%
+  step_tokenize(text) %>%
+  step_stopwords(text, language = "de", stopword_source = "snowball") %>%
+  step_stem(text) %>%
+  step_tfidf(text) %>%
+  step_normalize(all_numeric_predictors())
 
-#d_train <- training(d_split)
-#d_test <- testing(d_split)
+rec0
 ```
 
-## Rezept 1
+### Preparing/Baking recipe 0
 
 ```{r}
-#rec1 <- recipe(c1 ~ ., data = select(d_train, text, c1, id)) %>%
- # update_role(id, new_role = "id") %>%
- # step_tokenize(text) %>%
- # step_stopwords(text, language = "de", stopword_source = "snowball") %>%
- # step_stem(text) %>%
-#  step_tokenfilter(text, max_tokens = 1e2) %>%
-#  step_tfidf(text) %>%
-#  step_normalize(all_numeric_predictors())
+rec0_prep <- prep(rec0)
 
-#rec1
+rec0_bake <- bake(rec0_prep, new_data = NULL)
+
+kable(head(rec0_bake))
 ```
 
+## Recipe 1
+
+As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a "clean" text predictions. For this we use the following methods: Removal of german stop words, word stemming, Use of a tokenfilter (max. = 100) and normalization of all predictors. Furthermore we apply step_tfidf, which results in an inverse Document Frequency of our tokens.
+
+### Defining recipe 1
+
 ```{r}
-#rec1_prep <- prep(rec1)
+rec1 <- recipe(c1 ~ ., data = select(d_train2, text, c1, id)) %>%
+  update_role(id, new_role = "id") %>%
+  step_tokenize(text) %>%
+  step_stopwords(text, language = "de", stopword_source = "snowball") %>%
+  step_stem(text) %>%
+  step_tokenfilter(text, max_tokens = 1e2) %>%
+  step_tfidf(text) %>%
+  step_normalize(all_numeric_predictors())
+
+rec1
 ```
 
-```{r}
-#rec1_bake <- bake(rec1_prep, new_data = NULL)
+### Preparing/Baking recipe 1
 
-#head(rec1_bake)
+```{r}
+rec1_prep <- prep(rec1)
+
+rec1_bake <- bake(rec1_prep, new_data = NULL)
+
+kable(head(rec1_bake))
+```
+
+# Models
+
+## Model 0
+
+```{r}
+m_null <- 
+  parsnip::null_model() %>%
+  set_engine("parsnip") %>%
+  set_mode("classification")
+
+m_null
 ```
 
 ## Model 1
 
 ```{r}
-#nb_spec <- naive_Bayes() %>%
- # set_mode("classification") %>%
-#  set_engine("naivebayes")
+m_nb <- naive_Bayes() %>%
+  set_mode("classification") %>%
+  set_engine("naivebayes")
 
-#nb_spec
+m_nb
 ```
 
 ```{r}
-#set.seed(13)
-#cv_folds <- vfold_cv(d_train)
+set.seed(13)
+cv_folds <- vfold_cv(d_train_id)
+```
+
+## Mapping
+
+```{r, echo=FALSE}
+wf_set <- workflow_set(preproc = list(recipe1 = rec1),
+                                  models = list(m_null = m_null, m_nb = m_nb),
+                                  cross = TRUE)
+```
+
+```{r, echo=FALSE}
+lambda_grid <- grid_regular(penalty(), levels = 30)
+```
+
+```{r, echo=FALSE}
+wf_set_adjusted <- wf_set %>%
+               option_add(grid = lambda_grid, id = str_match(wf_set$wflow_id, ".*m_null$")) %>%
+               option_add(grid = lambda_grid, id = str_match(wf_set$wflow_id, ".*m_nb$"))
+```
+
+```{r, echo=FALSE}
+wf_set_fit <- workflow_map(wf_set_adjusted, fn = "tune_grid", resamples = vfold_cv(d_train_id, v = 3, strata = c1), verbose = TRUE)
+autoplot(wf_set_fit)
+```
+
+```{r, echo=FALSE}
+train_metrics <- wf_set_fit %>%
+               collect_metrics() %>%
+               filter(.metric == "roc_auc") %>%
+               arrange(-mean)
+```
+
+```{r, echo=FALSE}
+best_wf_id <- train_metrics %>% 
+               slice_head(n = 1) %>% 
+               pull(wflow_id)
+```
+
+```{r, echo=FALSE}
+best_wf <- wf_set_fit %>%
+               extract_workflow(best_wf_id)
+```
+
+```{r, echo=FALSE}
+best_wf_fit <- wf_set_fit %>% 
+               extract_workflow_set_result(best_wf_id)
+```
+
+```{r, echo=FALSE}
+best_wf_finalized <- best_wf %>% 
+               finalize_workflow(select_best(best_wf_fit))
+```
+
+```{r, echo=FALSE}
+last_fit <- fit(best_wf_finalized, d_train_id)
+```
+
+```{r, echo=FALSE}
+test_predicted <- bind_cols(d_test_id, predict(last_fit, new_data = d_test_id)) %>% 
+               mutate(c1 = factor(c1))
+```
+
+```{r, echo=FALSE}
+test_metrics <- test_predicted %>% 
+               metrics(c1, .pred_class)
 ```
 
 ## Workflow 1
@@ -367,27 +476,32 @@ Distinct Funktion beseitigt die doppelten Schimpfwörter
 ## Nullmodell
 
 ```{r}
-#null_classification <- parsnip::null_model() %>%
- # set_engine("parsnip") %>%
- # set_mode("classification")
+null_classification <- parsnip::null_model() %>%
+  set_engine("parsnip") %>%
+  set_mode("classification")
+```
+
+```{r}
+set.seed(42)
+folds1 <- vfold_cv(d_train2)
 ```
 
 ### Resampling
 
 ```{r}
-#null_rs <- workflow() %>%
- # add_recipe(rec1) %>%
- # add_model(null_classification) %>%
- # fit_resamples(cv_folds)
+null_rs <- workflow() %>%
+  add_recipe(rec1) %>%
+  add_model(null_classification) %>%
+  fit_resamples(folds1)
 ```
 
 ### Performance
 
 ```{r}
-#null_rs %>%
- # collect_metrics()
+null_rs %>%
+  collect_metrics()
 
-#show_best(null_rs)
+show_best(null_rs)
 ```
 
 ## Workflow 2
