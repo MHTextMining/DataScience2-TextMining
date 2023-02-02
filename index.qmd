@@ -301,6 +301,7 @@ rec0 <- recipe(c1 ~ ., data = select(d_train2, text, c1, id)) %>%
   step_tokenize(text) %>%
   step_stopwords(text, language = "de", stopword_source = "snowball") %>%
   step_stem(text) %>%
+  step_tokenfilter(text, max_tokens = 1e2) %>%
   step_tfidf(text) %>%
   step_normalize(all_numeric_predictors())
 
