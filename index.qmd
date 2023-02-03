@@ -1,7 +1,7 @@
 ---
 title: "Analysebericht"
 author: "Markus Häfner"
-date: "10.02.2023"
+date: "02.10.2023"
 format:
   html:
     toc: true
@@ -40,6 +40,7 @@ library(remoji)
 library(tokenizers)  
 library(pradadata)
 library(knitr)
+library(parsnip)
 ```
 
 ## Training - Data
@@ -291,7 +292,7 @@ save(wild_emojis_df, file = "data/wild_emojis.RData")
 
 ## Recipe 0
 
-As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a "clean" text predictions. For this we use the following methods: Removal of german stop words, word stemming  and normalization of all predictors. Furthermore we apply step_tfidf, which results in an inverse Document Frequency of our tokens.
+As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a "clean" text predictions. For this we use the following methods: Removal of german stop words, word stemming and normalization of all predictors.
 
 ### Defining recipe 0
 
@@ -301,8 +302,6 @@ rec0 <- recipe(c1 ~ ., data = select(d_train2, text, c1, id)) %>%
   step_tokenize(text) %>%
   step_stopwords(text, language = "de", stopword_source = "snowball") %>%
   step_stem(text) %>%
-  step_tokenfilter(text, max_tokens = 1e2) %>%
-  step_tfidf(text) %>%
   step_normalize(all_numeric_predictors())
 
 rec0
@@ -320,7 +319,9 @@ kable(head(rec0_bake))
 
 ## Recipe 1
 
-As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a "clean" text predictions. For this we use the following methods: Removal of german stop words, word stemming, Use of a tokenfilter (max. = 100) and normalization of all predictors. Furthermore we apply step_tfidf, which results in an inverse Document Frequency of our tokens.
+Recipe 1 applies all steps from recipe 0 and adds `step_tf`, which converts a token variable into multiple variables 
+containing the token counts.
+To avoid running into memory issues, we apply a restriction for the amount of tokens (n = 100) using `step_tokenfilter`. 
 
 ### Defining recipe 1
 
@@ -331,13 +332,13 @@ rec1 <- recipe(c1 ~ ., data = select(d_train2, text, c1, id)) %>%
   step_stopwords(text, language = "de", stopword_source = "snowball") %>%
   step_stem(text) %>%
   step_tokenfilter(text, max_tokens = 1e2) %>%
-  step_tfidf(text) %>%
+  step_tf(text) %>%
   step_normalize(all_numeric_predictors())
 
 rec1
 ```
 
-### Preparing/Baking recipe 1
+### Preparing/Baking recipe 2
 
 ```{r}
 rec1_prep <- prep(rec1)
@@ -347,13 +348,41 @@ rec1_bake <- bake(rec1_prep, new_data = NULL)
 kable(head(rec1_bake))
 ```
 
+## Recipe 2
+
+In this recipe we change `step_tf` to `step_tfidf`, which results in an inverse Document Frequency of our tokens.
+
+### Defining recipe 2
+
+```{r}
+rec2 <- recipe(c1 ~ ., data = select(d_train2, text, c1, id)) %>%
+  update_role(id, new_role = "id") %>%
+  step_tokenize(text) %>%
+  step_stopwords(text, language = "de", stopword_source = "snowball") %>%
+  step_stem(text) %>%
+  step_tokenfilter(text, max_tokens = 1e2) %>%
+  step_tfidf(text) %>%
+  step_normalize(all_numeric_predictors())
+
+rec2
+```
+
+### Preparing/Baking recipe 2
+
+```{r}
+rec2_prep <- prep(rec2)
+
+rec2_bake <- bake(rec2_prep, new_data = NULL)
+
+kable(head(rec2_bake))
+```
+
 # Models
 
 ## Model 0
 
 ```{r}
-m_null <- 
-  parsnip::null_model() %>%
+m_null <- null_model() %>%
   set_engine("parsnip") %>%
   set_mode("classification")
 
@@ -372,13 +401,13 @@ m_nb
 
 ```{r}
 set.seed(13)
-cv_folds <- vfold_cv(d_train_id)
+cv_folds <- vfold_cv(d_train2)
 ```
 
-## Mapping
+# Workflow
 
 ```{r, echo=FALSE}
-wf_set <- workflow_set(preproc = list(recipe1 = rec1),
+wf_set <- workflow_set(preproc = list(recipe1 = rec1, recipe2 = rec2),
                                   models = list(m_null = m_null, m_nb = m_nb),
                                   cross = TRUE)
 ```
@@ -394,7 +423,7 @@ wf_set_adjusted <- wf_set %>%
 ```
 
 ```{r, echo=FALSE}
-wf_set_fit <- workflow_map(wf_set_adjusted, fn = "tune_grid", resamples = vfold_cv(d_train_id, v = 3, strata = c1), verbose = TRUE)
+wf_set_fit <- workflow_map(wf_set_adjusted, fn = "tune_grid", resamples = vfold_cv(d_train2, v = 10, strata = c1), verbose = TRUE)
 autoplot(wf_set_fit)
 ```
 
@@ -427,7 +456,7 @@ best_wf_finalized <- best_wf %>%
 ```
 
 ```{r, echo=FALSE}
-last_fit <- fit(best_wf_finalized, d_train_id)
+last_fit <- fit(best_wf_finalized, d_train2)
 ```
 
 ```{r, echo=FALSE}
@@ -477,7 +506,7 @@ test_metrics <- test_predicted %>%
 ## Nullmodell
 
 ```{r}
-null_classification <- parsnip::null_model() %>%
+null_classification <- null_model() %>%
   set_engine("parsnip") %>%
   set_mode("classification")
 ```

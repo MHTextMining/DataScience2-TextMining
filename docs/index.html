@@ -210,7 +210,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#recipe-1" id="toc-recipe-1" class="nav-link" data-scroll-target="#recipe-1">Recipe 1</a>
   <ul class="collapse">
   <li><a href="#defining-recipe-1" id="toc-defining-recipe-1" class="nav-link" data-scroll-target="#defining-recipe-1">Defining recipe 1</a></li>
-  <li><a href="#preparingbaking-recipe-1" id="toc-preparingbaking-recipe-1" class="nav-link" data-scroll-target="#preparingbaking-recipe-1">Preparing/Baking recipe 1</a></li>
+  <li><a href="#preparingbaking-recipe-2" id="toc-preparingbaking-recipe-2" class="nav-link" data-scroll-target="#preparingbaking-recipe-2">Preparing/Baking recipe 2</a></li>
+  </ul></li>
+  <li><a href="#recipe-2" id="toc-recipe-2" class="nav-link" data-scroll-target="#recipe-2">Recipe 2</a>
+  <ul class="collapse">
+  <li><a href="#defining-recipe-2" id="toc-defining-recipe-2" class="nav-link" data-scroll-target="#defining-recipe-2">Defining recipe 2</a></li>
+  <li><a href="#preparingbaking-recipe-2-1" id="toc-preparingbaking-recipe-2-1" class="nav-link" data-scroll-target="#preparingbaking-recipe-2-1">Preparing/Baking recipe 2</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a>
@@ -301,7 +306,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remoji)  </span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tokenizers)  </span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pradadata)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parsnip)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="training---data" class="level2">
@@ -1098,7 +1104,7 @@ argument.</code></pre>
 <h1>Recipes</h1>
 <section id="recipe-0" class="level2">
 <h2 class="anchored" data-anchor-id="recipe-0">Recipe 0</h2>
-<p>As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a “clean” text predictions. For this we use the following methods: Removal of german stop words, word stemming and normalization of all predictors. Furthermore we apply step_tfidf, which results in an inverse Document Frequency of our tokens.</p>
+<p>As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a “clean” text predictions. For this we use the following methods: Removal of german stop words, word stemming and normalization of all predictors.</p>
 <section id="defining-recipe-0" class="level3">
 <h3 class="anchored" data-anchor-id="defining-recipe-0">Defining recipe 0</h3>
 <div class="cell">
@@ -1107,11 +1113,98 @@ argument.</code></pre>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text) <span class="sc">%&gt;%</span></span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stopwords</span>(text, <span class="at">language =</span> <span class="st">"de"</span>, <span class="at">stopword_source =</span> <span class="st">"snowball"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stem</span>(text) <span class="sc">%&gt;%</span></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenfilter</span>(text, <span class="at">max_tokens =</span> <span class="fl">1e2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tfidf</span>(text) <span class="sc">%&gt;%</span></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>rec0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>rec0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Recipe
+
+Inputs:
+
+      role #variables
+        id          1
+   outcome          1
+ predictor          1
+
+Operations:
+
+Tokenization for text
+Stop word removal for text
+Stemming for text
+Centering and scaling for all_numeric_predictors()</code></pre>
+</div>
+</div>
+</section>
+<section id="preparingbaking-recipe-0" class="level3">
+<h3 class="anchored" data-anchor-id="preparingbaking-recipe-0">Preparing/Baking recipe 0</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rec0_prep <span class="ot">&lt;-</span> <span class="fu">prep</span>(rec0)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>rec0_bake <span class="ot">&lt;-</span> <span class="fu">bake</span>(rec0_prep, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rec0_bake))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">text</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: left;">c1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[8 tokens]</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OTHER</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[8 tokens]</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OTHER</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[8 tokens]</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OTHER</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[8 tokens]</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OTHER</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[8 tokens]</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OTHER</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[8 tokens]</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OTHER</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="recipe-1" class="level2">
+<h2 class="anchored" data-anchor-id="recipe-1">Recipe 1</h2>
+<p>Recipe 1 applies all steps from recipe 0 and adds <code>step_tf</code>, which converts a token variable into multiple variables containing the token counts. To avoid running into memory issues, we apply a restriction for the amount of tokens (n = 100) using <code>step_tokenfilter</code>.</p>
+<section id="defining-recipe-1" class="level3">
+<h3 class="anchored" data-anchor-id="defining-recipe-1">Defining recipe 1</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>rec1 <span class="ot">&lt;-</span> <span class="fu">recipe</span>(c1 <span class="sc">~</span> ., <span class="at">data =</span> <span class="fu">select</span>(d_train2, text, c1, id)) <span class="sc">%&gt;%</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text) <span class="sc">%&gt;%</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stopwords</span>(text, <span class="at">language =</span> <span class="st">"de"</span>, <span class="at">stopword_source =</span> <span class="st">"snowball"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stem</span>(text) <span class="sc">%&gt;%</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenfilter</span>(text, <span class="at">max_tokens =</span> <span class="fl">1e2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tf</span>(text) <span class="sc">%&gt;%</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>rec1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Recipe
 
@@ -1128,19 +1221,19 @@ Tokenization for text
 Stop word removal for text
 Stemming for text
 Text filtering for text
-Term frequency-inverse document frequency with text
+Term frequency with text
 Centering and scaling for all_numeric_predictors()</code></pre>
 </div>
 </div>
 </section>
-<section id="preparingbaking-recipe-0" class="level3">
-<h3 class="anchored" data-anchor-id="preparingbaking-recipe-0">Preparing/Baking recipe 0</h3>
+<section id="preparingbaking-recipe-2" class="level3">
+<h3 class="anchored" data-anchor-id="preparingbaking-recipe-2">Preparing/Baking recipe 2</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rec0_prep <span class="ot">&lt;-</span> <span class="fu">prep</span>(rec0)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>rec0_bake <span class="ot">&lt;-</span> <span class="fu">bake</span>(rec0_prep, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rec0_bake))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>rec1_prep <span class="ot">&lt;-</span> <span class="fu">prep</span>(rec1)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>rec1_bake <span class="ot">&lt;-</span> <span class="fu">bake</span>(rec1_prep, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rec1_bake))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <colgroup>
@@ -1251,732 +1344,732 @@ Centering and scaling for all_numeric_predictors()</code></pre>
 <tr class="header">
 <th style="text-align: right;">id</th>
 <th style="text-align: left;">c1</th>
-<th style="text-align: right;">tfidf_text__macmik</th>
-<th style="text-align: right;">tfidf_text_2</th>
-<th style="text-align: right;">tfidf_text_ab</th>
-<th style="text-align: right;">tfidf_text_afd</th>
-<th style="text-align: right;">tfidf_text_amp</th>
-<th style="text-align: right;">tfidf_text_antisemitismu</th>
-<th style="text-align: right;">tfidf_text_athinamala</th>
-<th style="text-align: right;">tfidf_text_beim</th>
-<th style="text-align: right;">tfidf_text_besser</th>
-<th style="text-align: right;">tfidf_text_cdu</th>
-<th style="text-align: right;">tfidf_text_charlie_silv</th>
-<th style="text-align: right;">tfidf_text_d</th>
-<th style="text-align: right;">tfidf_text_dafür</th>
-<th style="text-align: right;">tfidf_text_dank</th>
-<th style="text-align: right;">tfidf_text_dass</th>
-<th style="text-align: right;">tfidf_text_deutsch</th>
-<th style="text-align: right;">tfidf_text_deutschen</th>
-<th style="text-align: right;">tfidf_text_deutschland</th>
-<th style="text-align: right;">tfidf_text_dumm</th>
-<th style="text-align: right;">tfidf_text_eigentlich</th>
-<th style="text-align: right;">tfidf_text_einfach</th>
-<th style="text-align: right;">tfidf_text_ellibisathid</th>
-<th style="text-align: right;">tfidf_text_ennof_</th>
-<th style="text-align: right;">tfidf_text_erst</th>
-<th style="text-align: right;">tfidf_text_eu</th>
-<th style="text-align: right;">tfidf_text_europa</th>
-<th style="text-align: right;">tfidf_text_fdp</th>
-<th style="text-align: right;">tfidf_text_feldenfrizz</th>
-<th style="text-align: right;">tfidf_text_frage</th>
-<th style="text-align: right;">tfidf_text_frau</th>
-<th style="text-align: right;">tfidf_text_ganz</th>
-<th style="text-align: right;">tfidf_text_geht</th>
-<th style="text-align: right;">tfidf_text_gerad</th>
-<th style="text-align: right;">tfidf_text_gibt</th>
-<th style="text-align: right;">tfidf_text_grünen</th>
-<th style="text-align: right;">tfidf_text_gut</th>
-<th style="text-align: right;">tfidf_text_heut</th>
-<th style="text-align: right;">tfidf_text_immer</th>
-<th style="text-align: right;">tfidf_text_info2099</th>
-<th style="text-align: right;">tfidf_text_islam</th>
-<th style="text-align: right;">tfidf_text_israel</th>
-<th style="text-align: right;">tfidf_text_ja</th>
-<th style="text-align: right;">tfidf_text_jahr</th>
-<th style="text-align: right;">tfidf_text_juden</th>
-<th style="text-align: right;">tfidf_text_klar</th>
-<th style="text-align: right;">tfidf_text_kommen</th>
-<th style="text-align: right;">tfidf_text_kommt</th>
-<th style="text-align: right;">tfidf_text_krippmari</th>
-<th style="text-align: right;">tfidf_text_land</th>
-<th style="text-align: right;">tfidf_text_lassen</th>
-<th style="text-align: right;">tfidf_text_lbr</th>
-<th style="text-align: right;">tfidf_text_leben</th>
-<th style="text-align: right;">tfidf_text_leut</th>
-<th style="text-align: right;">tfidf_text_lifetrend</th>
-<th style="text-align: right;">tfidf_text_link</th>
-<th style="text-align: right;">tfidf_text_macht</th>
-<th style="text-align: right;">tfidf_text_machtjanix23</th>
-<th style="text-align: right;">tfidf_text_mal</th>
-<th style="text-align: right;">tfidf_text_mastermikeg</th>
-<th style="text-align: right;">tfidf_text_md_franz</th>
-<th style="text-align: right;">tfidf_text_mehr</th>
-<th style="text-align: right;">tfidf_text_menschen</th>
-<th style="text-align: right;">tfidf_text_merkel</th>
-<th style="text-align: right;">tfidf_text_moslem</th>
-<th style="text-align: right;">tfidf_text_müssen</th>
-<th style="text-align: right;">tfidf_text_nancypeggymandi</th>
-<th style="text-align: right;">tfidf_text_nasanas</th>
-<th style="text-align: right;">tfidf_text_nie</th>
-<th style="text-align: right;">tfidf_text_noherrman</th>
-<th style="text-align: right;">tfidf_text_norbinator2403</th>
-<th style="text-align: right;">tfidf_text_partei</th>
-<th style="text-align: right;">tfidf_text_petpanther0</th>
-<th style="text-align: right;">tfidf_text_politik</th>
-<th style="text-align: right;">tfidf_text_problem</th>
-<th style="text-align: right;">tfidf_text_recht</th>
-<th style="text-align: right;">tfidf_text_richtig</th>
-<th style="text-align: right;">tfidf_text_schmiddiemaik</th>
-<th style="text-align: right;">tfidf_text_schon</th>
-<th style="text-align: right;">tfidf_text_schulz</th>
-<th style="text-align: right;">tfidf_text_seit</th>
-<th style="text-align: right;">tfidf_text_sollten</th>
-<th style="text-align: right;">tfidf_text_spd</th>
-<th style="text-align: right;">tfidf_text_steffmann45</th>
-<th style="text-align: right;">tfidf_text_thomasgbau</th>
-<th style="text-align: right;">tfidf_text_troll_putin</th>
-<th style="text-align: right;">tfidf_text_trump</th>
-<th style="text-align: right;">tfidf_text_tun</th>
-<th style="text-align: right;">tfidf_text_u</th>
-<th style="text-align: right;">tfidf_text_unser</th>
-<th style="text-align: right;">tfidf_text_viel</th>
-<th style="text-align: right;">tfidf_text_volk</th>
-<th style="text-align: right;">tfidf_text_wäre</th>
-<th style="text-align: right;">tfidf_text_warum</th>
-<th style="text-align: right;">tfidf_text_welt</th>
-<th style="text-align: right;">tfidf_text_wer</th>
-<th style="text-align: right;">tfidf_text_willjrosenblatt</th>
-<th style="text-align: right;">tfidf_text_wissen</th>
-<th style="text-align: right;">tfidf_text_wohl</th>
-<th style="text-align: right;">tfidf_text_wurd</th>
-<th style="text-align: right;">tfidf_text_zeit</th>
+<th style="text-align: right;">tf_text__macmik</th>
+<th style="text-align: right;">tf_text_2</th>
+<th style="text-align: right;">tf_text_ab</th>
+<th style="text-align: right;">tf_text_afd</th>
+<th style="text-align: right;">tf_text_amp</th>
+<th style="text-align: right;">tf_text_antisemitismu</th>
+<th style="text-align: right;">tf_text_athinamala</th>
+<th style="text-align: right;">tf_text_beim</th>
+<th style="text-align: right;">tf_text_besser</th>
+<th style="text-align: right;">tf_text_cdu</th>
+<th style="text-align: right;">tf_text_charlie_silv</th>
+<th style="text-align: right;">tf_text_d</th>
+<th style="text-align: right;">tf_text_dafür</th>
+<th style="text-align: right;">tf_text_dank</th>
+<th style="text-align: right;">tf_text_dass</th>
+<th style="text-align: right;">tf_text_deutsch</th>
+<th style="text-align: right;">tf_text_deutschen</th>
+<th style="text-align: right;">tf_text_deutschland</th>
+<th style="text-align: right;">tf_text_dumm</th>
+<th style="text-align: right;">tf_text_eigentlich</th>
+<th style="text-align: right;">tf_text_einfach</th>
+<th style="text-align: right;">tf_text_ellibisathid</th>
+<th style="text-align: right;">tf_text_ennof_</th>
+<th style="text-align: right;">tf_text_erst</th>
+<th style="text-align: right;">tf_text_eu</th>
+<th style="text-align: right;">tf_text_europa</th>
+<th style="text-align: right;">tf_text_fdp</th>
+<th style="text-align: right;">tf_text_feldenfrizz</th>
+<th style="text-align: right;">tf_text_frage</th>
+<th style="text-align: right;">tf_text_frau</th>
+<th style="text-align: right;">tf_text_ganz</th>
+<th style="text-align: right;">tf_text_geht</th>
+<th style="text-align: right;">tf_text_gerad</th>
+<th style="text-align: right;">tf_text_gibt</th>
+<th style="text-align: right;">tf_text_grünen</th>
+<th style="text-align: right;">tf_text_gut</th>
+<th style="text-align: right;">tf_text_heut</th>
+<th style="text-align: right;">tf_text_immer</th>
+<th style="text-align: right;">tf_text_info2099</th>
+<th style="text-align: right;">tf_text_islam</th>
+<th style="text-align: right;">tf_text_israel</th>
+<th style="text-align: right;">tf_text_ja</th>
+<th style="text-align: right;">tf_text_jahr</th>
+<th style="text-align: right;">tf_text_juden</th>
+<th style="text-align: right;">tf_text_klar</th>
+<th style="text-align: right;">tf_text_kommen</th>
+<th style="text-align: right;">tf_text_kommt</th>
+<th style="text-align: right;">tf_text_krippmari</th>
+<th style="text-align: right;">tf_text_land</th>
+<th style="text-align: right;">tf_text_lassen</th>
+<th style="text-align: right;">tf_text_lbr</th>
+<th style="text-align: right;">tf_text_leben</th>
+<th style="text-align: right;">tf_text_leut</th>
+<th style="text-align: right;">tf_text_lifetrend</th>
+<th style="text-align: right;">tf_text_link</th>
+<th style="text-align: right;">tf_text_macht</th>
+<th style="text-align: right;">tf_text_machtjanix23</th>
+<th style="text-align: right;">tf_text_mal</th>
+<th style="text-align: right;">tf_text_mastermikeg</th>
+<th style="text-align: right;">tf_text_md_franz</th>
+<th style="text-align: right;">tf_text_mehr</th>
+<th style="text-align: right;">tf_text_menschen</th>
+<th style="text-align: right;">tf_text_merkel</th>
+<th style="text-align: right;">tf_text_moslem</th>
+<th style="text-align: right;">tf_text_müssen</th>
+<th style="text-align: right;">tf_text_nancypeggymandi</th>
+<th style="text-align: right;">tf_text_nasanas</th>
+<th style="text-align: right;">tf_text_nie</th>
+<th style="text-align: right;">tf_text_noherrman</th>
+<th style="text-align: right;">tf_text_norbinator2403</th>
+<th style="text-align: right;">tf_text_partei</th>
+<th style="text-align: right;">tf_text_petpanther0</th>
+<th style="text-align: right;">tf_text_politik</th>
+<th style="text-align: right;">tf_text_problem</th>
+<th style="text-align: right;">tf_text_recht</th>
+<th style="text-align: right;">tf_text_richtig</th>
+<th style="text-align: right;">tf_text_schmiddiemaik</th>
+<th style="text-align: right;">tf_text_schon</th>
+<th style="text-align: right;">tf_text_schulz</th>
+<th style="text-align: right;">tf_text_seit</th>
+<th style="text-align: right;">tf_text_sollten</th>
+<th style="text-align: right;">tf_text_spd</th>
+<th style="text-align: right;">tf_text_steffmann45</th>
+<th style="text-align: right;">tf_text_thomasgbau</th>
+<th style="text-align: right;">tf_text_troll_putin</th>
+<th style="text-align: right;">tf_text_trump</th>
+<th style="text-align: right;">tf_text_tun</th>
+<th style="text-align: right;">tf_text_u</th>
+<th style="text-align: right;">tf_text_unser</th>
+<th style="text-align: right;">tf_text_viel</th>
+<th style="text-align: right;">tf_text_volk</th>
+<th style="text-align: right;">tf_text_wäre</th>
+<th style="text-align: right;">tf_text_warum</th>
+<th style="text-align: right;">tf_text_welt</th>
+<th style="text-align: right;">tf_text_wer</th>
+<th style="text-align: right;">tf_text_willjrosenblatt</th>
+<th style="text-align: right;">tf_text_wissen</th>
+<th style="text-align: right;">tf_text_wohl</th>
+<th style="text-align: right;">tf_text_wurd</th>
+<th style="text-align: right;">tf_text_zeit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">OTHER</td>
-<td style="text-align: right;">-0.2046971</td>
-<td style="text-align: right;">-0.10818</td>
-<td style="text-align: right;">-0.1112027</td>
-<td style="text-align: right;">-0.183911</td>
-<td style="text-align: right;">-0.139826</td>
-<td style="text-align: right;">-0.1114063</td>
-<td style="text-align: right;">-0.2035422</td>
-<td style="text-align: right;">-0.1030925</td>
-<td style="text-align: right;">-0.1017134</td>
-<td style="text-align: right;">-0.1220679</td>
-<td style="text-align: right;">-0.2076717</td>
-<td style="text-align: right;">-0.1490074</td>
-<td style="text-align: right;">-0.1094694</td>
-<td style="text-align: right;">-0.1164771</td>
-<td style="text-align: right;">-0.2249427</td>
-<td style="text-align: right;">-0.1668844</td>
-<td style="text-align: right;">-0.1634909</td>
-<td style="text-align: right;">-0.2061445</td>
-<td style="text-align: right;">-0.1090941</td>
-<td style="text-align: right;">-0.0974087</td>
-<td style="text-align: right;">-0.1267974</td>
-<td style="text-align: right;">-0.1574188</td>
-<td style="text-align: right;">-0.1738374</td>
-<td style="text-align: right;">-0.1343178</td>
-<td style="text-align: right;">-0.1237941</td>
-<td style="text-align: right;">-0.1109163</td>
-<td style="text-align: right;">-0.1027171</td>
-<td style="text-align: right;">-0.2088993</td>
-<td style="text-align: right;">-0.1028882</td>
-<td style="text-align: right;">-0.0990451</td>
-<td style="text-align: right;">-0.1247091</td>
-<td style="text-align: right;">-0.1627264</td>
-<td style="text-align: right;">-0.1151801</td>
-<td style="text-align: right;">-0.1762969</td>
-<td style="text-align: right;">-0.1119625</td>
-<td style="text-align: right;">-0.1304065</td>
-<td style="text-align: right;">-0.1831333</td>
-<td style="text-align: right;">-0.1771996</td>
-<td style="text-align: right;">-0.1099044</td>
-<td style="text-align: right;">-0.1190517</td>
-<td style="text-align: right;">-0.0937324</td>
-<td style="text-align: right;">-0.1902084</td>
-<td style="text-align: right;">-0.1070177</td>
-<td style="text-align: right;">-0.1224279</td>
-<td style="text-align: right;">-0.1043296</td>
-<td style="text-align: right;">-0.0990304</td>
-<td style="text-align: right;">-0.1142309</td>
-<td style="text-align: right;">-0.1374178</td>
-<td style="text-align: right;">-0.1610094</td>
-<td style="text-align: right;">-0.1170274</td>
-<td style="text-align: right;">-0.457635</td>
-<td style="text-align: right;">-0.0989025</td>
-<td style="text-align: right;">-0.0950959</td>
-<td style="text-align: right;">-0.2074084</td>
-<td style="text-align: right;">-0.1069606</td>
-<td style="text-align: right;">-0.1348166</td>
-<td style="text-align: right;">-0.181476</td>
-<td style="text-align: right;">-0.1904124</td>
-<td style="text-align: right;">-0.1507703</td>
-<td style="text-align: right;">-0.1701186</td>
-<td style="text-align: right;">-0.2029995</td>
-<td style="text-align: right;">-0.1331198</td>
-<td style="text-align: right;">-0.2215594</td>
-<td style="text-align: right;">-0.1037051</td>
-<td style="text-align: right;">-0.1427895</td>
-<td style="text-align: right;">-0.1677173</td>
-<td style="text-align: right;">-0.1613571</td>
-<td style="text-align: right;">-0.0949727</td>
-<td style="text-align: right;">-0.1455073</td>
-<td style="text-align: right;">-0.1096419</td>
-<td style="text-align: right;">-0.0966837</td>
-<td style="text-align: right;">-0.1334192</td>
-<td style="text-align: right;">-0.1673881</td>
-<td style="text-align: right;">-0.0966918</td>
-<td style="text-align: right;">-0.1350388</td>
-<td style="text-align: right;">-0.1010914</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.2098409</td>
-<td style="text-align: right;">-0.1059306</td>
-<td style="text-align: right;">-0.1440749</td>
-<td style="text-align: right;">-0.1039163</td>
-<td style="text-align: right;">-0.1438801</td>
-<td style="text-align: right;">-0.1357296</td>
-<td style="text-align: right;">-0.2037728</td>
-<td style="text-align: right;">-0.1740675</td>
-<td style="text-align: right;">-0.105243</td>
-<td style="text-align: right;">-0.1210043</td>
-<td style="text-align: right;">-0.1647217</td>
-<td style="text-align: right;">-0.1693567</td>
-<td style="text-align: right;">-0.1046049</td>
-<td style="text-align: right;">-0.1182956</td>
-<td style="text-align: right;">-0.1289218</td>
-<td style="text-align: right;">-0.1141761</td>
-<td style="text-align: right;">-0.1538827</td>
-<td style="text-align: right;">-0.1654977</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.1041291</td>
-<td style="text-align: right;">-0.113319</td>
-<td style="text-align: right;">-0.1279721</td>
-<td style="text-align: right;">-0.109967</td>
+<td style="text-align: right;">-0.2181837</td>
+<td style="text-align: right;">-0.1268097</td>
+<td style="text-align: right;">-0.1397748</td>
+<td style="text-align: right;">-0.2105654</td>
+<td style="text-align: right;">-0.1612123</td>
+<td style="text-align: right;">-0.1340203</td>
+<td style="text-align: right;">-0.2185599</td>
+<td style="text-align: right;">-0.1276976</td>
+<td style="text-align: right;">-0.1228247</td>
+<td style="text-align: right;">-0.1451956</td>
+<td style="text-align: right;">-0.2132186</td>
+<td style="text-align: right;">-0.165617</td>
+<td style="text-align: right;">-0.1335802</td>
+<td style="text-align: right;">-0.137967</td>
+<td style="text-align: right;">-0.268011</td>
+<td style="text-align: right;">-0.1937308</td>
+<td style="text-align: right;">-0.2018478</td>
+<td style="text-align: right;">-0.2404751</td>
+<td style="text-align: right;">-0.1200408</td>
+<td style="text-align: right;">-0.1179432</td>
+<td style="text-align: right;">-0.1535924</td>
+<td style="text-align: right;">-0.2195604</td>
+<td style="text-align: right;">-0.174546</td>
+<td style="text-align: right;">-0.1588671</td>
+<td style="text-align: right;">-0.1299863</td>
+<td style="text-align: right;">-0.1352013</td>
+<td style="text-align: right;">-0.1158842</td>
+<td style="text-align: right;">-0.2179829</td>
+<td style="text-align: right;">-0.1246337</td>
+<td style="text-align: right;">-0.1177262</td>
+<td style="text-align: right;">-0.1467688</td>
+<td style="text-align: right;">-0.1898054</td>
+<td style="text-align: right;">-0.1388002</td>
+<td style="text-align: right;">-0.2097905</td>
+<td style="text-align: right;">-0.1330166</td>
+<td style="text-align: right;">-0.1602758</td>
+<td style="text-align: right;">-0.2126052</td>
+<td style="text-align: right;">-0.2101149</td>
+<td style="text-align: right;">-0.2254143</td>
+<td style="text-align: right;">-0.1314975</td>
+<td style="text-align: right;">-0.1190182</td>
+<td style="text-align: right;">-0.2244681</td>
+<td style="text-align: right;">-0.1243158</td>
+<td style="text-align: right;">-0.1344315</td>
+<td style="text-align: right;">-0.1230724</td>
+<td style="text-align: right;">-0.1243964</td>
+<td style="text-align: right;">-0.1343305</td>
+<td style="text-align: right;">-0.1615824</td>
+<td style="text-align: right;">-0.1898014</td>
+<td style="text-align: right;">-0.1384775</td>
+<td style="text-align: right;">-0.4343566</td>
+<td style="text-align: right;">-0.1229872</td>
+<td style="text-align: right;">-0.1231672</td>
+<td style="text-align: right;">-0.2102087</td>
+<td style="text-align: right;">-0.1283373</td>
+<td style="text-align: right;">-0.1614732</td>
+<td style="text-align: right;">-0.2117309</td>
+<td style="text-align: right;">-0.2325615</td>
+<td style="text-align: right;">-0.1518574</td>
+<td style="text-align: right;">-0.2204329</td>
+<td style="text-align: right;">-0.2414132</td>
+<td style="text-align: right;">-0.1651923</td>
+<td style="text-align: right;">-0.2556649</td>
+<td style="text-align: right;">-0.1164057</td>
+<td style="text-align: right;">-0.1659071</td>
+<td style="text-align: right;">-0.1757865</td>
+<td style="text-align: right;">-0.2139592</td>
+<td style="text-align: right;">-0.1198</td>
+<td style="text-align: right;">-0.2219714</td>
+<td style="text-align: right;">-0.1826081</td>
+<td style="text-align: right;">-0.115462</td>
+<td style="text-align: right;">-0.2235752</td>
+<td style="text-align: right;">-0.1925122</td>
+<td style="text-align: right;">-0.120601</td>
+<td style="text-align: right;">-0.1636386</td>
+<td style="text-align: right;">-0.1215639</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.2537114</td>
+<td style="text-align: right;">-0.1208106</td>
+<td style="text-align: right;">-0.1768606</td>
+<td style="text-align: right;">-0.1233923</td>
+<td style="text-align: right;">-0.1719963</td>
+<td style="text-align: right;">-0.1361913</td>
+<td style="text-align: right;">-0.2179326</td>
+<td style="text-align: right;">-0.1833362</td>
+<td style="text-align: right;">-0.1171027</td>
+<td style="text-align: right;">-0.1391723</td>
+<td style="text-align: right;">-0.1812469</td>
+<td style="text-align: right;">-0.1992716</td>
+<td style="text-align: right;">-0.1261175</td>
+<td style="text-align: right;">-0.1426567</td>
+<td style="text-align: right;">-0.1542457</td>
+<td style="text-align: right;">-0.1361545</td>
+<td style="text-align: right;">-0.1786233</td>
+<td style="text-align: right;">-0.1956021</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.1221246</td>
+<td style="text-align: right;">-0.1350533</td>
+<td style="text-align: right;">-0.1574835</td>
+<td style="text-align: right;">-0.1314802</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">OTHER</td>
-<td style="text-align: right;">-0.2046971</td>
-<td style="text-align: right;">-0.10818</td>
-<td style="text-align: right;">-0.1112027</td>
-<td style="text-align: right;">-0.183911</td>
-<td style="text-align: right;">-0.139826</td>
-<td style="text-align: right;">-0.1114063</td>
-<td style="text-align: right;">-0.2035422</td>
-<td style="text-align: right;">-0.1030925</td>
-<td style="text-align: right;">-0.1017134</td>
-<td style="text-align: right;">-0.1220679</td>
-<td style="text-align: right;">-0.2076717</td>
-<td style="text-align: right;">-0.1490074</td>
-<td style="text-align: right;">-0.1094694</td>
-<td style="text-align: right;">-0.1164771</td>
-<td style="text-align: right;">-0.2249427</td>
-<td style="text-align: right;">-0.1668844</td>
-<td style="text-align: right;">-0.1634909</td>
-<td style="text-align: right;">-0.2061445</td>
-<td style="text-align: right;">-0.1090941</td>
-<td style="text-align: right;">-0.0974087</td>
-<td style="text-align: right;">-0.1267974</td>
-<td style="text-align: right;">-0.1574188</td>
-<td style="text-align: right;">-0.1738374</td>
-<td style="text-align: right;">-0.1343178</td>
-<td style="text-align: right;">-0.1237941</td>
-<td style="text-align: right;">-0.1109163</td>
-<td style="text-align: right;">-0.1027171</td>
-<td style="text-align: right;">-0.2088993</td>
-<td style="text-align: right;">-0.1028882</td>
-<td style="text-align: right;">-0.0990451</td>
-<td style="text-align: right;">-0.1247091</td>
-<td style="text-align: right;">-0.1627264</td>
-<td style="text-align: right;">-0.1151801</td>
-<td style="text-align: right;">-0.1762969</td>
-<td style="text-align: right;">-0.1119625</td>
-<td style="text-align: right;">-0.1304065</td>
-<td style="text-align: right;">-0.1831333</td>
-<td style="text-align: right;">-0.1771996</td>
-<td style="text-align: right;">-0.1099044</td>
-<td style="text-align: right;">-0.1190517</td>
-<td style="text-align: right;">-0.0937324</td>
-<td style="text-align: right;">-0.1902084</td>
-<td style="text-align: right;">-0.1070177</td>
-<td style="text-align: right;">-0.1224279</td>
-<td style="text-align: right;">-0.1043296</td>
-<td style="text-align: right;">-0.0990304</td>
-<td style="text-align: right;">-0.1142309</td>
-<td style="text-align: right;">-0.1374178</td>
-<td style="text-align: right;">-0.1610094</td>
-<td style="text-align: right;">-0.1170274</td>
-<td style="text-align: right;">-0.457635</td>
-<td style="text-align: right;">-0.0989025</td>
-<td style="text-align: right;">-0.0950959</td>
-<td style="text-align: right;">-0.2074084</td>
-<td style="text-align: right;">-0.1069606</td>
-<td style="text-align: right;">-0.1348166</td>
-<td style="text-align: right;">-0.181476</td>
-<td style="text-align: right;">-0.1904124</td>
-<td style="text-align: right;">-0.1507703</td>
-<td style="text-align: right;">-0.1701186</td>
-<td style="text-align: right;">-0.2029995</td>
-<td style="text-align: right;">-0.1331198</td>
-<td style="text-align: right;">-0.2215594</td>
-<td style="text-align: right;">-0.1037051</td>
-<td style="text-align: right;">-0.1427895</td>
-<td style="text-align: right;">-0.1677173</td>
-<td style="text-align: right;">-0.1613571</td>
-<td style="text-align: right;">-0.0949727</td>
-<td style="text-align: right;">-0.1455073</td>
-<td style="text-align: right;">-0.1096419</td>
-<td style="text-align: right;">-0.0966837</td>
-<td style="text-align: right;">-0.1334192</td>
-<td style="text-align: right;">-0.1673881</td>
-<td style="text-align: right;">-0.0966918</td>
-<td style="text-align: right;">-0.1350388</td>
-<td style="text-align: right;">-0.1010914</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.2098409</td>
-<td style="text-align: right;">-0.1059306</td>
-<td style="text-align: right;">-0.1440749</td>
-<td style="text-align: right;">-0.1039163</td>
-<td style="text-align: right;">-0.1438801</td>
-<td style="text-align: right;">-0.1357296</td>
-<td style="text-align: right;">-0.2037728</td>
-<td style="text-align: right;">-0.1740675</td>
-<td style="text-align: right;">-0.105243</td>
-<td style="text-align: right;">-0.1210043</td>
-<td style="text-align: right;">-0.1647217</td>
-<td style="text-align: right;">-0.1693567</td>
-<td style="text-align: right;">-0.1046049</td>
-<td style="text-align: right;">-0.1182956</td>
-<td style="text-align: right;">-0.1289218</td>
-<td style="text-align: right;">-0.1141761</td>
-<td style="text-align: right;">-0.1538827</td>
-<td style="text-align: right;">-0.1654977</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.1041291</td>
-<td style="text-align: right;">-0.113319</td>
-<td style="text-align: right;">-0.1279721</td>
-<td style="text-align: right;">-0.109967</td>
+<td style="text-align: right;">-0.2181837</td>
+<td style="text-align: right;">-0.1268097</td>
+<td style="text-align: right;">-0.1397748</td>
+<td style="text-align: right;">-0.2105654</td>
+<td style="text-align: right;">-0.1612123</td>
+<td style="text-align: right;">-0.1340203</td>
+<td style="text-align: right;">-0.2185599</td>
+<td style="text-align: right;">-0.1276976</td>
+<td style="text-align: right;">-0.1228247</td>
+<td style="text-align: right;">-0.1451956</td>
+<td style="text-align: right;">-0.2132186</td>
+<td style="text-align: right;">-0.165617</td>
+<td style="text-align: right;">-0.1335802</td>
+<td style="text-align: right;">-0.137967</td>
+<td style="text-align: right;">-0.268011</td>
+<td style="text-align: right;">-0.1937308</td>
+<td style="text-align: right;">-0.2018478</td>
+<td style="text-align: right;">-0.2404751</td>
+<td style="text-align: right;">-0.1200408</td>
+<td style="text-align: right;">-0.1179432</td>
+<td style="text-align: right;">-0.1535924</td>
+<td style="text-align: right;">-0.2195604</td>
+<td style="text-align: right;">-0.174546</td>
+<td style="text-align: right;">-0.1588671</td>
+<td style="text-align: right;">-0.1299863</td>
+<td style="text-align: right;">-0.1352013</td>
+<td style="text-align: right;">-0.1158842</td>
+<td style="text-align: right;">-0.2179829</td>
+<td style="text-align: right;">-0.1246337</td>
+<td style="text-align: right;">-0.1177262</td>
+<td style="text-align: right;">-0.1467688</td>
+<td style="text-align: right;">-0.1898054</td>
+<td style="text-align: right;">-0.1388002</td>
+<td style="text-align: right;">-0.2097905</td>
+<td style="text-align: right;">-0.1330166</td>
+<td style="text-align: right;">-0.1602758</td>
+<td style="text-align: right;">-0.2126052</td>
+<td style="text-align: right;">-0.2101149</td>
+<td style="text-align: right;">-0.2254143</td>
+<td style="text-align: right;">-0.1314975</td>
+<td style="text-align: right;">-0.1190182</td>
+<td style="text-align: right;">-0.2244681</td>
+<td style="text-align: right;">-0.1243158</td>
+<td style="text-align: right;">-0.1344315</td>
+<td style="text-align: right;">-0.1230724</td>
+<td style="text-align: right;">-0.1243964</td>
+<td style="text-align: right;">-0.1343305</td>
+<td style="text-align: right;">-0.1615824</td>
+<td style="text-align: right;">-0.1898014</td>
+<td style="text-align: right;">-0.1384775</td>
+<td style="text-align: right;">-0.4343566</td>
+<td style="text-align: right;">-0.1229872</td>
+<td style="text-align: right;">-0.1231672</td>
+<td style="text-align: right;">-0.2102087</td>
+<td style="text-align: right;">-0.1283373</td>
+<td style="text-align: right;">-0.1614732</td>
+<td style="text-align: right;">-0.2117309</td>
+<td style="text-align: right;">-0.2325615</td>
+<td style="text-align: right;">-0.1518574</td>
+<td style="text-align: right;">-0.2204329</td>
+<td style="text-align: right;">-0.2414132</td>
+<td style="text-align: right;">-0.1651923</td>
+<td style="text-align: right;">-0.2556649</td>
+<td style="text-align: right;">-0.1164057</td>
+<td style="text-align: right;">-0.1659071</td>
+<td style="text-align: right;">-0.1757865</td>
+<td style="text-align: right;">-0.2139592</td>
+<td style="text-align: right;">-0.1198</td>
+<td style="text-align: right;">-0.2219714</td>
+<td style="text-align: right;">-0.1826081</td>
+<td style="text-align: right;">-0.115462</td>
+<td style="text-align: right;">-0.2235752</td>
+<td style="text-align: right;">-0.1925122</td>
+<td style="text-align: right;">-0.120601</td>
+<td style="text-align: right;">-0.1636386</td>
+<td style="text-align: right;">-0.1215639</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.2537114</td>
+<td style="text-align: right;">-0.1208106</td>
+<td style="text-align: right;">-0.1768606</td>
+<td style="text-align: right;">-0.1233923</td>
+<td style="text-align: right;">-0.1719963</td>
+<td style="text-align: right;">-0.1361913</td>
+<td style="text-align: right;">-0.2179326</td>
+<td style="text-align: right;">-0.1833362</td>
+<td style="text-align: right;">-0.1171027</td>
+<td style="text-align: right;">-0.1391723</td>
+<td style="text-align: right;">-0.1812469</td>
+<td style="text-align: right;">-0.1992716</td>
+<td style="text-align: right;">-0.1261175</td>
+<td style="text-align: right;">-0.1426567</td>
+<td style="text-align: right;">-0.1542457</td>
+<td style="text-align: right;">-0.1361545</td>
+<td style="text-align: right;">-0.1786233</td>
+<td style="text-align: right;">-0.1956021</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.1221246</td>
+<td style="text-align: right;">-0.1350533</td>
+<td style="text-align: right;">-0.1574835</td>
+<td style="text-align: right;">-0.1314802</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">OTHER</td>
-<td style="text-align: right;">-0.2046971</td>
-<td style="text-align: right;">-0.10818</td>
-<td style="text-align: right;">-0.1112027</td>
-<td style="text-align: right;">-0.183911</td>
-<td style="text-align: right;">-0.139826</td>
-<td style="text-align: right;">-0.1114063</td>
-<td style="text-align: right;">-0.2035422</td>
-<td style="text-align: right;">-0.1030925</td>
-<td style="text-align: right;">-0.1017134</td>
-<td style="text-align: right;">-0.1220679</td>
-<td style="text-align: right;">-0.2076717</td>
-<td style="text-align: right;">-0.1490074</td>
-<td style="text-align: right;">-0.1094694</td>
-<td style="text-align: right;">-0.1164771</td>
-<td style="text-align: right;">-0.2249427</td>
-<td style="text-align: right;">-0.1668844</td>
-<td style="text-align: right;">-0.1634909</td>
-<td style="text-align: right;">-0.2061445</td>
-<td style="text-align: right;">-0.1090941</td>
-<td style="text-align: right;">-0.0974087</td>
-<td style="text-align: right;">-0.1267974</td>
-<td style="text-align: right;">-0.1574188</td>
-<td style="text-align: right;">-0.1738374</td>
-<td style="text-align: right;">-0.1343178</td>
-<td style="text-align: right;">-0.1237941</td>
-<td style="text-align: right;">-0.1109163</td>
-<td style="text-align: right;">-0.1027171</td>
-<td style="text-align: right;">-0.2088993</td>
-<td style="text-align: right;">-0.1028882</td>
-<td style="text-align: right;">-0.0990451</td>
-<td style="text-align: right;">-0.1247091</td>
-<td style="text-align: right;">-0.1627264</td>
-<td style="text-align: right;">-0.1151801</td>
-<td style="text-align: right;">-0.1762969</td>
-<td style="text-align: right;">-0.1119625</td>
-<td style="text-align: right;">-0.1304065</td>
-<td style="text-align: right;">-0.1831333</td>
-<td style="text-align: right;">-0.1771996</td>
-<td style="text-align: right;">-0.1099044</td>
-<td style="text-align: right;">-0.1190517</td>
-<td style="text-align: right;">-0.0937324</td>
-<td style="text-align: right;">-0.1902084</td>
-<td style="text-align: right;">-0.1070177</td>
-<td style="text-align: right;">-0.1224279</td>
-<td style="text-align: right;">-0.1043296</td>
-<td style="text-align: right;">-0.0990304</td>
-<td style="text-align: right;">-0.1142309</td>
-<td style="text-align: right;">-0.1374178</td>
-<td style="text-align: right;">-0.1610094</td>
-<td style="text-align: right;">-0.1170274</td>
-<td style="text-align: right;">-0.457635</td>
-<td style="text-align: right;">-0.0989025</td>
-<td style="text-align: right;">-0.0950959</td>
-<td style="text-align: right;">-0.2074084</td>
-<td style="text-align: right;">-0.1069606</td>
-<td style="text-align: right;">-0.1348166</td>
-<td style="text-align: right;">-0.181476</td>
-<td style="text-align: right;">-0.1904124</td>
-<td style="text-align: right;">-0.1507703</td>
-<td style="text-align: right;">-0.1701186</td>
-<td style="text-align: right;">-0.2029995</td>
-<td style="text-align: right;">-0.1331198</td>
-<td style="text-align: right;">-0.2215594</td>
-<td style="text-align: right;">-0.1037051</td>
-<td style="text-align: right;">-0.1427895</td>
-<td style="text-align: right;">-0.1677173</td>
-<td style="text-align: right;">-0.1613571</td>
-<td style="text-align: right;">-0.0949727</td>
-<td style="text-align: right;">-0.1455073</td>
-<td style="text-align: right;">-0.1096419</td>
-<td style="text-align: right;">-0.0966837</td>
-<td style="text-align: right;">-0.1334192</td>
-<td style="text-align: right;">-0.1673881</td>
-<td style="text-align: right;">-0.0966918</td>
-<td style="text-align: right;">-0.1350388</td>
-<td style="text-align: right;">-0.1010914</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.2098409</td>
-<td style="text-align: right;">-0.1059306</td>
-<td style="text-align: right;">-0.1440749</td>
-<td style="text-align: right;">-0.1039163</td>
-<td style="text-align: right;">-0.1438801</td>
-<td style="text-align: right;">-0.1357296</td>
-<td style="text-align: right;">-0.2037728</td>
-<td style="text-align: right;">-0.1740675</td>
-<td style="text-align: right;">-0.105243</td>
-<td style="text-align: right;">-0.1210043</td>
-<td style="text-align: right;">-0.1647217</td>
-<td style="text-align: right;">-0.1693567</td>
-<td style="text-align: right;">-0.1046049</td>
-<td style="text-align: right;">-0.1182956</td>
-<td style="text-align: right;">-0.1289218</td>
-<td style="text-align: right;">-0.1141761</td>
-<td style="text-align: right;">-0.1538827</td>
-<td style="text-align: right;">-0.1654977</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.1041291</td>
-<td style="text-align: right;">-0.113319</td>
-<td style="text-align: right;">-0.1279721</td>
-<td style="text-align: right;">-0.109967</td>
+<td style="text-align: right;">-0.2181837</td>
+<td style="text-align: right;">-0.1268097</td>
+<td style="text-align: right;">-0.1397748</td>
+<td style="text-align: right;">-0.2105654</td>
+<td style="text-align: right;">-0.1612123</td>
+<td style="text-align: right;">-0.1340203</td>
+<td style="text-align: right;">-0.2185599</td>
+<td style="text-align: right;">-0.1276976</td>
+<td style="text-align: right;">-0.1228247</td>
+<td style="text-align: right;">-0.1451956</td>
+<td style="text-align: right;">-0.2132186</td>
+<td style="text-align: right;">-0.165617</td>
+<td style="text-align: right;">-0.1335802</td>
+<td style="text-align: right;">-0.137967</td>
+<td style="text-align: right;">-0.268011</td>
+<td style="text-align: right;">-0.1937308</td>
+<td style="text-align: right;">-0.2018478</td>
+<td style="text-align: right;">-0.2404751</td>
+<td style="text-align: right;">-0.1200408</td>
+<td style="text-align: right;">-0.1179432</td>
+<td style="text-align: right;">-0.1535924</td>
+<td style="text-align: right;">-0.2195604</td>
+<td style="text-align: right;">-0.174546</td>
+<td style="text-align: right;">-0.1588671</td>
+<td style="text-align: right;">-0.1299863</td>
+<td style="text-align: right;">-0.1352013</td>
+<td style="text-align: right;">-0.1158842</td>
+<td style="text-align: right;">-0.2179829</td>
+<td style="text-align: right;">-0.1246337</td>
+<td style="text-align: right;">-0.1177262</td>
+<td style="text-align: right;">-0.1467688</td>
+<td style="text-align: right;">-0.1898054</td>
+<td style="text-align: right;">-0.1388002</td>
+<td style="text-align: right;">-0.2097905</td>
+<td style="text-align: right;">-0.1330166</td>
+<td style="text-align: right;">-0.1602758</td>
+<td style="text-align: right;">-0.2126052</td>
+<td style="text-align: right;">-0.2101149</td>
+<td style="text-align: right;">-0.2254143</td>
+<td style="text-align: right;">-0.1314975</td>
+<td style="text-align: right;">-0.1190182</td>
+<td style="text-align: right;">-0.2244681</td>
+<td style="text-align: right;">-0.1243158</td>
+<td style="text-align: right;">-0.1344315</td>
+<td style="text-align: right;">-0.1230724</td>
+<td style="text-align: right;">-0.1243964</td>
+<td style="text-align: right;">-0.1343305</td>
+<td style="text-align: right;">-0.1615824</td>
+<td style="text-align: right;">-0.1898014</td>
+<td style="text-align: right;">-0.1384775</td>
+<td style="text-align: right;">-0.4343566</td>
+<td style="text-align: right;">-0.1229872</td>
+<td style="text-align: right;">-0.1231672</td>
+<td style="text-align: right;">-0.2102087</td>
+<td style="text-align: right;">-0.1283373</td>
+<td style="text-align: right;">-0.1614732</td>
+<td style="text-align: right;">-0.2117309</td>
+<td style="text-align: right;">-0.2325615</td>
+<td style="text-align: right;">-0.1518574</td>
+<td style="text-align: right;">-0.2204329</td>
+<td style="text-align: right;">-0.2414132</td>
+<td style="text-align: right;">-0.1651923</td>
+<td style="text-align: right;">-0.2556649</td>
+<td style="text-align: right;">-0.1164057</td>
+<td style="text-align: right;">-0.1659071</td>
+<td style="text-align: right;">-0.1757865</td>
+<td style="text-align: right;">-0.2139592</td>
+<td style="text-align: right;">-0.1198</td>
+<td style="text-align: right;">-0.2219714</td>
+<td style="text-align: right;">-0.1826081</td>
+<td style="text-align: right;">-0.115462</td>
+<td style="text-align: right;">-0.2235752</td>
+<td style="text-align: right;">-0.1925122</td>
+<td style="text-align: right;">-0.120601</td>
+<td style="text-align: right;">-0.1636386</td>
+<td style="text-align: right;">-0.1215639</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.2537114</td>
+<td style="text-align: right;">-0.1208106</td>
+<td style="text-align: right;">-0.1768606</td>
+<td style="text-align: right;">-0.1233923</td>
+<td style="text-align: right;">-0.1719963</td>
+<td style="text-align: right;">-0.1361913</td>
+<td style="text-align: right;">-0.2179326</td>
+<td style="text-align: right;">-0.1833362</td>
+<td style="text-align: right;">-0.1171027</td>
+<td style="text-align: right;">-0.1391723</td>
+<td style="text-align: right;">-0.1812469</td>
+<td style="text-align: right;">-0.1992716</td>
+<td style="text-align: right;">-0.1261175</td>
+<td style="text-align: right;">-0.1426567</td>
+<td style="text-align: right;">-0.1542457</td>
+<td style="text-align: right;">-0.1361545</td>
+<td style="text-align: right;">-0.1786233</td>
+<td style="text-align: right;">-0.1956021</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.1221246</td>
+<td style="text-align: right;">-0.1350533</td>
+<td style="text-align: right;">-0.1574835</td>
+<td style="text-align: right;">-0.1314802</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">OTHER</td>
-<td style="text-align: right;">-0.2046971</td>
-<td style="text-align: right;">-0.10818</td>
-<td style="text-align: right;">-0.1112027</td>
-<td style="text-align: right;">-0.183911</td>
-<td style="text-align: right;">-0.139826</td>
-<td style="text-align: right;">-0.1114063</td>
-<td style="text-align: right;">-0.2035422</td>
-<td style="text-align: right;">-0.1030925</td>
-<td style="text-align: right;">-0.1017134</td>
-<td style="text-align: right;">-0.1220679</td>
-<td style="text-align: right;">-0.2076717</td>
-<td style="text-align: right;">-0.1490074</td>
-<td style="text-align: right;">-0.1094694</td>
-<td style="text-align: right;">-0.1164771</td>
-<td style="text-align: right;">-0.2249427</td>
-<td style="text-align: right;">-0.1668844</td>
-<td style="text-align: right;">-0.1634909</td>
-<td style="text-align: right;">-0.2061445</td>
-<td style="text-align: right;">-0.1090941</td>
-<td style="text-align: right;">-0.0974087</td>
-<td style="text-align: right;">-0.1267974</td>
-<td style="text-align: right;">-0.1574188</td>
-<td style="text-align: right;">-0.1738374</td>
-<td style="text-align: right;">-0.1343178</td>
-<td style="text-align: right;">-0.1237941</td>
-<td style="text-align: right;">-0.1109163</td>
-<td style="text-align: right;">-0.1027171</td>
-<td style="text-align: right;">-0.2088993</td>
-<td style="text-align: right;">-0.1028882</td>
-<td style="text-align: right;">-0.0990451</td>
-<td style="text-align: right;">-0.1247091</td>
-<td style="text-align: right;">-0.1627264</td>
-<td style="text-align: right;">-0.1151801</td>
-<td style="text-align: right;">-0.1762969</td>
-<td style="text-align: right;">-0.1119625</td>
-<td style="text-align: right;">-0.1304065</td>
-<td style="text-align: right;">-0.1831333</td>
-<td style="text-align: right;">-0.1771996</td>
-<td style="text-align: right;">-0.1099044</td>
-<td style="text-align: right;">-0.1190517</td>
-<td style="text-align: right;">-0.0937324</td>
-<td style="text-align: right;">-0.1902084</td>
-<td style="text-align: right;">-0.1070177</td>
-<td style="text-align: right;">-0.1224279</td>
-<td style="text-align: right;">-0.1043296</td>
-<td style="text-align: right;">-0.0990304</td>
-<td style="text-align: right;">-0.1142309</td>
-<td style="text-align: right;">-0.1374178</td>
-<td style="text-align: right;">-0.1610094</td>
-<td style="text-align: right;">-0.1170274</td>
-<td style="text-align: right;">-0.457635</td>
-<td style="text-align: right;">-0.0989025</td>
-<td style="text-align: right;">-0.0950959</td>
-<td style="text-align: right;">-0.2074084</td>
-<td style="text-align: right;">-0.1069606</td>
-<td style="text-align: right;">-0.1348166</td>
-<td style="text-align: right;">-0.181476</td>
-<td style="text-align: right;">-0.1904124</td>
-<td style="text-align: right;">-0.1507703</td>
-<td style="text-align: right;">-0.1701186</td>
-<td style="text-align: right;">-0.2029995</td>
-<td style="text-align: right;">-0.1331198</td>
-<td style="text-align: right;">-0.2215594</td>
-<td style="text-align: right;">-0.1037051</td>
-<td style="text-align: right;">-0.1427895</td>
-<td style="text-align: right;">-0.1677173</td>
-<td style="text-align: right;">-0.1613571</td>
-<td style="text-align: right;">-0.0949727</td>
-<td style="text-align: right;">-0.1455073</td>
-<td style="text-align: right;">-0.1096419</td>
-<td style="text-align: right;">-0.0966837</td>
-<td style="text-align: right;">-0.1334192</td>
-<td style="text-align: right;">-0.1673881</td>
-<td style="text-align: right;">-0.0966918</td>
-<td style="text-align: right;">-0.1350388</td>
-<td style="text-align: right;">-0.1010914</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.2098409</td>
-<td style="text-align: right;">-0.1059306</td>
-<td style="text-align: right;">-0.1440749</td>
-<td style="text-align: right;">-0.1039163</td>
-<td style="text-align: right;">-0.1438801</td>
-<td style="text-align: right;">-0.1357296</td>
-<td style="text-align: right;">-0.2037728</td>
-<td style="text-align: right;">-0.1740675</td>
-<td style="text-align: right;">-0.105243</td>
-<td style="text-align: right;">-0.1210043</td>
-<td style="text-align: right;">-0.1647217</td>
-<td style="text-align: right;">-0.1693567</td>
-<td style="text-align: right;">-0.1046049</td>
-<td style="text-align: right;">-0.1182956</td>
-<td style="text-align: right;">-0.1289218</td>
-<td style="text-align: right;">-0.1141761</td>
-<td style="text-align: right;">-0.1538827</td>
-<td style="text-align: right;">-0.1654977</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.1041291</td>
-<td style="text-align: right;">-0.113319</td>
-<td style="text-align: right;">-0.1279721</td>
-<td style="text-align: right;">-0.109967</td>
+<td style="text-align: right;">-0.2181837</td>
+<td style="text-align: right;">-0.1268097</td>
+<td style="text-align: right;">-0.1397748</td>
+<td style="text-align: right;">-0.2105654</td>
+<td style="text-align: right;">-0.1612123</td>
+<td style="text-align: right;">-0.1340203</td>
+<td style="text-align: right;">-0.2185599</td>
+<td style="text-align: right;">-0.1276976</td>
+<td style="text-align: right;">-0.1228247</td>
+<td style="text-align: right;">-0.1451956</td>
+<td style="text-align: right;">-0.2132186</td>
+<td style="text-align: right;">-0.165617</td>
+<td style="text-align: right;">-0.1335802</td>
+<td style="text-align: right;">-0.137967</td>
+<td style="text-align: right;">-0.268011</td>
+<td style="text-align: right;">-0.1937308</td>
+<td style="text-align: right;">-0.2018478</td>
+<td style="text-align: right;">-0.2404751</td>
+<td style="text-align: right;">-0.1200408</td>
+<td style="text-align: right;">-0.1179432</td>
+<td style="text-align: right;">-0.1535924</td>
+<td style="text-align: right;">-0.2195604</td>
+<td style="text-align: right;">-0.174546</td>
+<td style="text-align: right;">-0.1588671</td>
+<td style="text-align: right;">-0.1299863</td>
+<td style="text-align: right;">-0.1352013</td>
+<td style="text-align: right;">-0.1158842</td>
+<td style="text-align: right;">-0.2179829</td>
+<td style="text-align: right;">-0.1246337</td>
+<td style="text-align: right;">-0.1177262</td>
+<td style="text-align: right;">-0.1467688</td>
+<td style="text-align: right;">-0.1898054</td>
+<td style="text-align: right;">-0.1388002</td>
+<td style="text-align: right;">-0.2097905</td>
+<td style="text-align: right;">-0.1330166</td>
+<td style="text-align: right;">-0.1602758</td>
+<td style="text-align: right;">-0.2126052</td>
+<td style="text-align: right;">-0.2101149</td>
+<td style="text-align: right;">-0.2254143</td>
+<td style="text-align: right;">-0.1314975</td>
+<td style="text-align: right;">-0.1190182</td>
+<td style="text-align: right;">-0.2244681</td>
+<td style="text-align: right;">-0.1243158</td>
+<td style="text-align: right;">-0.1344315</td>
+<td style="text-align: right;">-0.1230724</td>
+<td style="text-align: right;">-0.1243964</td>
+<td style="text-align: right;">-0.1343305</td>
+<td style="text-align: right;">-0.1615824</td>
+<td style="text-align: right;">-0.1898014</td>
+<td style="text-align: right;">-0.1384775</td>
+<td style="text-align: right;">-0.4343566</td>
+<td style="text-align: right;">-0.1229872</td>
+<td style="text-align: right;">-0.1231672</td>
+<td style="text-align: right;">-0.2102087</td>
+<td style="text-align: right;">-0.1283373</td>
+<td style="text-align: right;">-0.1614732</td>
+<td style="text-align: right;">-0.2117309</td>
+<td style="text-align: right;">-0.2325615</td>
+<td style="text-align: right;">-0.1518574</td>
+<td style="text-align: right;">-0.2204329</td>
+<td style="text-align: right;">-0.2414132</td>
+<td style="text-align: right;">-0.1651923</td>
+<td style="text-align: right;">-0.2556649</td>
+<td style="text-align: right;">-0.1164057</td>
+<td style="text-align: right;">-0.1659071</td>
+<td style="text-align: right;">-0.1757865</td>
+<td style="text-align: right;">-0.2139592</td>
+<td style="text-align: right;">-0.1198</td>
+<td style="text-align: right;">-0.2219714</td>
+<td style="text-align: right;">-0.1826081</td>
+<td style="text-align: right;">-0.115462</td>
+<td style="text-align: right;">-0.2235752</td>
+<td style="text-align: right;">-0.1925122</td>
+<td style="text-align: right;">-0.120601</td>
+<td style="text-align: right;">-0.1636386</td>
+<td style="text-align: right;">-0.1215639</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.2537114</td>
+<td style="text-align: right;">-0.1208106</td>
+<td style="text-align: right;">-0.1768606</td>
+<td style="text-align: right;">-0.1233923</td>
+<td style="text-align: right;">-0.1719963</td>
+<td style="text-align: right;">-0.1361913</td>
+<td style="text-align: right;">-0.2179326</td>
+<td style="text-align: right;">-0.1833362</td>
+<td style="text-align: right;">-0.1171027</td>
+<td style="text-align: right;">-0.1391723</td>
+<td style="text-align: right;">-0.1812469</td>
+<td style="text-align: right;">-0.1992716</td>
+<td style="text-align: right;">-0.1261175</td>
+<td style="text-align: right;">-0.1426567</td>
+<td style="text-align: right;">-0.1542457</td>
+<td style="text-align: right;">-0.1361545</td>
+<td style="text-align: right;">-0.1786233</td>
+<td style="text-align: right;">-0.1956021</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.1221246</td>
+<td style="text-align: right;">-0.1350533</td>
+<td style="text-align: right;">-0.1574835</td>
+<td style="text-align: right;">-0.1314802</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">OTHER</td>
-<td style="text-align: right;">-0.2046971</td>
-<td style="text-align: right;">-0.10818</td>
-<td style="text-align: right;">-0.1112027</td>
-<td style="text-align: right;">-0.183911</td>
-<td style="text-align: right;">-0.139826</td>
-<td style="text-align: right;">-0.1114063</td>
-<td style="text-align: right;">-0.2035422</td>
-<td style="text-align: right;">-0.1030925</td>
-<td style="text-align: right;">-0.1017134</td>
-<td style="text-align: right;">-0.1220679</td>
-<td style="text-align: right;">-0.2076717</td>
-<td style="text-align: right;">-0.1490074</td>
-<td style="text-align: right;">-0.1094694</td>
-<td style="text-align: right;">-0.1164771</td>
-<td style="text-align: right;">-0.2249427</td>
-<td style="text-align: right;">-0.1668844</td>
-<td style="text-align: right;">-0.1634909</td>
-<td style="text-align: right;">-0.2061445</td>
-<td style="text-align: right;">-0.1090941</td>
-<td style="text-align: right;">-0.0974087</td>
-<td style="text-align: right;">-0.1267974</td>
-<td style="text-align: right;">-0.1574188</td>
-<td style="text-align: right;">-0.1738374</td>
-<td style="text-align: right;">-0.1343178</td>
-<td style="text-align: right;">-0.1237941</td>
-<td style="text-align: right;">-0.1109163</td>
-<td style="text-align: right;">-0.1027171</td>
-<td style="text-align: right;">-0.2088993</td>
-<td style="text-align: right;">-0.1028882</td>
-<td style="text-align: right;">-0.0990451</td>
-<td style="text-align: right;">-0.1247091</td>
-<td style="text-align: right;">-0.1627264</td>
-<td style="text-align: right;">-0.1151801</td>
-<td style="text-align: right;">-0.1762969</td>
-<td style="text-align: right;">-0.1119625</td>
-<td style="text-align: right;">-0.1304065</td>
-<td style="text-align: right;">-0.1831333</td>
-<td style="text-align: right;">-0.1771996</td>
-<td style="text-align: right;">-0.1099044</td>
-<td style="text-align: right;">-0.1190517</td>
-<td style="text-align: right;">-0.0937324</td>
-<td style="text-align: right;">-0.1902084</td>
-<td style="text-align: right;">-0.1070177</td>
-<td style="text-align: right;">-0.1224279</td>
-<td style="text-align: right;">-0.1043296</td>
-<td style="text-align: right;">-0.0990304</td>
-<td style="text-align: right;">-0.1142309</td>
-<td style="text-align: right;">-0.1374178</td>
-<td style="text-align: right;">-0.1610094</td>
-<td style="text-align: right;">-0.1170274</td>
-<td style="text-align: right;">-0.457635</td>
-<td style="text-align: right;">-0.0989025</td>
-<td style="text-align: right;">-0.0950959</td>
-<td style="text-align: right;">-0.2074084</td>
-<td style="text-align: right;">-0.1069606</td>
-<td style="text-align: right;">-0.1348166</td>
-<td style="text-align: right;">-0.181476</td>
-<td style="text-align: right;">-0.1904124</td>
-<td style="text-align: right;">-0.1507703</td>
-<td style="text-align: right;">-0.1701186</td>
-<td style="text-align: right;">-0.2029995</td>
-<td style="text-align: right;">-0.1331198</td>
-<td style="text-align: right;">-0.2215594</td>
-<td style="text-align: right;">-0.1037051</td>
-<td style="text-align: right;">-0.1427895</td>
-<td style="text-align: right;">-0.1677173</td>
-<td style="text-align: right;">-0.1613571</td>
-<td style="text-align: right;">-0.0949727</td>
-<td style="text-align: right;">-0.1455073</td>
-<td style="text-align: right;">-0.1096419</td>
-<td style="text-align: right;">-0.0966837</td>
-<td style="text-align: right;">-0.1334192</td>
-<td style="text-align: right;">-0.1673881</td>
-<td style="text-align: right;">-0.0966918</td>
-<td style="text-align: right;">-0.1350388</td>
-<td style="text-align: right;">-0.1010914</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.2098409</td>
-<td style="text-align: right;">-0.1059306</td>
-<td style="text-align: right;">-0.1440749</td>
-<td style="text-align: right;">-0.1039163</td>
-<td style="text-align: right;">-0.1438801</td>
-<td style="text-align: right;">-0.1357296</td>
-<td style="text-align: right;">-0.2037728</td>
-<td style="text-align: right;">-0.1740675</td>
-<td style="text-align: right;">-0.105243</td>
-<td style="text-align: right;">-0.1210043</td>
-<td style="text-align: right;">-0.1647217</td>
-<td style="text-align: right;">-0.1693567</td>
-<td style="text-align: right;">-0.1046049</td>
-<td style="text-align: right;">-0.1182956</td>
-<td style="text-align: right;">-0.1289218</td>
-<td style="text-align: right;">-0.1141761</td>
-<td style="text-align: right;">-0.1538827</td>
-<td style="text-align: right;">-0.1654977</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.1041291</td>
-<td style="text-align: right;">-0.113319</td>
-<td style="text-align: right;">-0.1279721</td>
-<td style="text-align: right;">-0.109967</td>
+<td style="text-align: right;">-0.2181837</td>
+<td style="text-align: right;">-0.1268097</td>
+<td style="text-align: right;">-0.1397748</td>
+<td style="text-align: right;">-0.2105654</td>
+<td style="text-align: right;">-0.1612123</td>
+<td style="text-align: right;">-0.1340203</td>
+<td style="text-align: right;">-0.2185599</td>
+<td style="text-align: right;">-0.1276976</td>
+<td style="text-align: right;">-0.1228247</td>
+<td style="text-align: right;">-0.1451956</td>
+<td style="text-align: right;">-0.2132186</td>
+<td style="text-align: right;">-0.165617</td>
+<td style="text-align: right;">-0.1335802</td>
+<td style="text-align: right;">-0.137967</td>
+<td style="text-align: right;">-0.268011</td>
+<td style="text-align: right;">-0.1937308</td>
+<td style="text-align: right;">-0.2018478</td>
+<td style="text-align: right;">-0.2404751</td>
+<td style="text-align: right;">-0.1200408</td>
+<td style="text-align: right;">-0.1179432</td>
+<td style="text-align: right;">-0.1535924</td>
+<td style="text-align: right;">-0.2195604</td>
+<td style="text-align: right;">-0.174546</td>
+<td style="text-align: right;">-0.1588671</td>
+<td style="text-align: right;">-0.1299863</td>
+<td style="text-align: right;">-0.1352013</td>
+<td style="text-align: right;">-0.1158842</td>
+<td style="text-align: right;">-0.2179829</td>
+<td style="text-align: right;">-0.1246337</td>
+<td style="text-align: right;">-0.1177262</td>
+<td style="text-align: right;">-0.1467688</td>
+<td style="text-align: right;">-0.1898054</td>
+<td style="text-align: right;">-0.1388002</td>
+<td style="text-align: right;">-0.2097905</td>
+<td style="text-align: right;">-0.1330166</td>
+<td style="text-align: right;">-0.1602758</td>
+<td style="text-align: right;">-0.2126052</td>
+<td style="text-align: right;">-0.2101149</td>
+<td style="text-align: right;">-0.2254143</td>
+<td style="text-align: right;">-0.1314975</td>
+<td style="text-align: right;">-0.1190182</td>
+<td style="text-align: right;">-0.2244681</td>
+<td style="text-align: right;">-0.1243158</td>
+<td style="text-align: right;">-0.1344315</td>
+<td style="text-align: right;">-0.1230724</td>
+<td style="text-align: right;">-0.1243964</td>
+<td style="text-align: right;">-0.1343305</td>
+<td style="text-align: right;">-0.1615824</td>
+<td style="text-align: right;">-0.1898014</td>
+<td style="text-align: right;">-0.1384775</td>
+<td style="text-align: right;">-0.4343566</td>
+<td style="text-align: right;">-0.1229872</td>
+<td style="text-align: right;">-0.1231672</td>
+<td style="text-align: right;">-0.2102087</td>
+<td style="text-align: right;">-0.1283373</td>
+<td style="text-align: right;">-0.1614732</td>
+<td style="text-align: right;">-0.2117309</td>
+<td style="text-align: right;">-0.2325615</td>
+<td style="text-align: right;">-0.1518574</td>
+<td style="text-align: right;">-0.2204329</td>
+<td style="text-align: right;">-0.2414132</td>
+<td style="text-align: right;">-0.1651923</td>
+<td style="text-align: right;">-0.2556649</td>
+<td style="text-align: right;">-0.1164057</td>
+<td style="text-align: right;">-0.1659071</td>
+<td style="text-align: right;">-0.1757865</td>
+<td style="text-align: right;">-0.2139592</td>
+<td style="text-align: right;">-0.1198</td>
+<td style="text-align: right;">-0.2219714</td>
+<td style="text-align: right;">-0.1826081</td>
+<td style="text-align: right;">-0.115462</td>
+<td style="text-align: right;">-0.2235752</td>
+<td style="text-align: right;">-0.1925122</td>
+<td style="text-align: right;">-0.120601</td>
+<td style="text-align: right;">-0.1636386</td>
+<td style="text-align: right;">-0.1215639</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.2537114</td>
+<td style="text-align: right;">-0.1208106</td>
+<td style="text-align: right;">-0.1768606</td>
+<td style="text-align: right;">-0.1233923</td>
+<td style="text-align: right;">-0.1719963</td>
+<td style="text-align: right;">-0.1361913</td>
+<td style="text-align: right;">-0.2179326</td>
+<td style="text-align: right;">-0.1833362</td>
+<td style="text-align: right;">-0.1171027</td>
+<td style="text-align: right;">-0.1391723</td>
+<td style="text-align: right;">-0.1812469</td>
+<td style="text-align: right;">-0.1992716</td>
+<td style="text-align: right;">-0.1261175</td>
+<td style="text-align: right;">-0.1426567</td>
+<td style="text-align: right;">-0.1542457</td>
+<td style="text-align: right;">-0.1361545</td>
+<td style="text-align: right;">-0.1786233</td>
+<td style="text-align: right;">-0.1956021</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.1221246</td>
+<td style="text-align: right;">-0.1350533</td>
+<td style="text-align: right;">-0.1574835</td>
+<td style="text-align: right;">-0.1314802</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">OTHER</td>
-<td style="text-align: right;">-0.2046971</td>
-<td style="text-align: right;">-0.10818</td>
-<td style="text-align: right;">-0.1112027</td>
-<td style="text-align: right;">-0.183911</td>
-<td style="text-align: right;">-0.139826</td>
-<td style="text-align: right;">-0.1114063</td>
-<td style="text-align: right;">-0.2035422</td>
-<td style="text-align: right;">-0.1030925</td>
-<td style="text-align: right;">-0.1017134</td>
-<td style="text-align: right;">-0.1220679</td>
-<td style="text-align: right;">-0.2076717</td>
-<td style="text-align: right;">-0.1490074</td>
-<td style="text-align: right;">-0.1094694</td>
-<td style="text-align: right;">-0.1164771</td>
-<td style="text-align: right;">-0.2249427</td>
-<td style="text-align: right;">-0.1668844</td>
-<td style="text-align: right;">-0.1634909</td>
-<td style="text-align: right;">-0.2061445</td>
-<td style="text-align: right;">-0.1090941</td>
-<td style="text-align: right;">-0.0974087</td>
-<td style="text-align: right;">-0.1267974</td>
-<td style="text-align: right;">-0.1574188</td>
-<td style="text-align: right;">-0.1738374</td>
-<td style="text-align: right;">-0.1343178</td>
-<td style="text-align: right;">-0.1237941</td>
-<td style="text-align: right;">-0.1109163</td>
-<td style="text-align: right;">-0.1027171</td>
-<td style="text-align: right;">-0.2088993</td>
-<td style="text-align: right;">-0.1028882</td>
-<td style="text-align: right;">-0.0990451</td>
-<td style="text-align: right;">-0.1247091</td>
-<td style="text-align: right;">-0.1627264</td>
-<td style="text-align: right;">-0.1151801</td>
-<td style="text-align: right;">-0.1762969</td>
-<td style="text-align: right;">-0.1119625</td>
-<td style="text-align: right;">-0.1304065</td>
-<td style="text-align: right;">-0.1831333</td>
-<td style="text-align: right;">-0.1771996</td>
-<td style="text-align: right;">-0.1099044</td>
-<td style="text-align: right;">-0.1190517</td>
-<td style="text-align: right;">-0.0937324</td>
-<td style="text-align: right;">-0.1902084</td>
-<td style="text-align: right;">-0.1070177</td>
-<td style="text-align: right;">-0.1224279</td>
-<td style="text-align: right;">-0.1043296</td>
-<td style="text-align: right;">-0.0990304</td>
-<td style="text-align: right;">-0.1142309</td>
-<td style="text-align: right;">-0.1374178</td>
-<td style="text-align: right;">-0.1610094</td>
-<td style="text-align: right;">-0.1170274</td>
-<td style="text-align: right;">-0.457635</td>
-<td style="text-align: right;">-0.0989025</td>
-<td style="text-align: right;">-0.0950959</td>
-<td style="text-align: right;">-0.2074084</td>
-<td style="text-align: right;">-0.1069606</td>
-<td style="text-align: right;">-0.1348166</td>
-<td style="text-align: right;">-0.181476</td>
-<td style="text-align: right;">-0.1904124</td>
-<td style="text-align: right;">-0.1507703</td>
-<td style="text-align: right;">-0.1701186</td>
-<td style="text-align: right;">-0.2029995</td>
-<td style="text-align: right;">-0.1331198</td>
-<td style="text-align: right;">-0.2215594</td>
-<td style="text-align: right;">-0.1037051</td>
-<td style="text-align: right;">-0.1427895</td>
-<td style="text-align: right;">-0.1677173</td>
-<td style="text-align: right;">-0.1613571</td>
-<td style="text-align: right;">-0.0949727</td>
-<td style="text-align: right;">-0.1455073</td>
-<td style="text-align: right;">-0.1096419</td>
-<td style="text-align: right;">-0.0966837</td>
-<td style="text-align: right;">-0.1334192</td>
-<td style="text-align: right;">-0.1673881</td>
-<td style="text-align: right;">-0.0966918</td>
-<td style="text-align: right;">-0.1350388</td>
-<td style="text-align: right;">-0.1010914</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.2098409</td>
-<td style="text-align: right;">-0.1059306</td>
-<td style="text-align: right;">-0.1440749</td>
-<td style="text-align: right;">-0.1039163</td>
-<td style="text-align: right;">-0.1438801</td>
-<td style="text-align: right;">-0.1357296</td>
-<td style="text-align: right;">-0.2037728</td>
-<td style="text-align: right;">-0.1740675</td>
-<td style="text-align: right;">-0.105243</td>
-<td style="text-align: right;">-0.1210043</td>
-<td style="text-align: right;">-0.1647217</td>
-<td style="text-align: right;">-0.1693567</td>
-<td style="text-align: right;">-0.1046049</td>
-<td style="text-align: right;">-0.1182956</td>
-<td style="text-align: right;">-0.1289218</td>
-<td style="text-align: right;">-0.1141761</td>
-<td style="text-align: right;">-0.1538827</td>
-<td style="text-align: right;">-0.1654977</td>
-<td style="text-align: right;">-0.2046493</td>
-<td style="text-align: right;">-0.1041291</td>
-<td style="text-align: right;">-0.113319</td>
-<td style="text-align: right;">-0.1279721</td>
-<td style="text-align: right;">-0.109967</td>
+<td style="text-align: right;">-0.2181837</td>
+<td style="text-align: right;">-0.1268097</td>
+<td style="text-align: right;">-0.1397748</td>
+<td style="text-align: right;">-0.2105654</td>
+<td style="text-align: right;">-0.1612123</td>
+<td style="text-align: right;">-0.1340203</td>
+<td style="text-align: right;">-0.2185599</td>
+<td style="text-align: right;">-0.1276976</td>
+<td style="text-align: right;">-0.1228247</td>
+<td style="text-align: right;">-0.1451956</td>
+<td style="text-align: right;">-0.2132186</td>
+<td style="text-align: right;">-0.165617</td>
+<td style="text-align: right;">-0.1335802</td>
+<td style="text-align: right;">-0.137967</td>
+<td style="text-align: right;">-0.268011</td>
+<td style="text-align: right;">-0.1937308</td>
+<td style="text-align: right;">-0.2018478</td>
+<td style="text-align: right;">-0.2404751</td>
+<td style="text-align: right;">-0.1200408</td>
+<td style="text-align: right;">-0.1179432</td>
+<td style="text-align: right;">-0.1535924</td>
+<td style="text-align: right;">-0.2195604</td>
+<td style="text-align: right;">-0.174546</td>
+<td style="text-align: right;">-0.1588671</td>
+<td style="text-align: right;">-0.1299863</td>
+<td style="text-align: right;">-0.1352013</td>
+<td style="text-align: right;">-0.1158842</td>
+<td style="text-align: right;">-0.2179829</td>
+<td style="text-align: right;">-0.1246337</td>
+<td style="text-align: right;">-0.1177262</td>
+<td style="text-align: right;">-0.1467688</td>
+<td style="text-align: right;">-0.1898054</td>
+<td style="text-align: right;">-0.1388002</td>
+<td style="text-align: right;">-0.2097905</td>
+<td style="text-align: right;">-0.1330166</td>
+<td style="text-align: right;">-0.1602758</td>
+<td style="text-align: right;">-0.2126052</td>
+<td style="text-align: right;">-0.2101149</td>
+<td style="text-align: right;">-0.2254143</td>
+<td style="text-align: right;">-0.1314975</td>
+<td style="text-align: right;">-0.1190182</td>
+<td style="text-align: right;">-0.2244681</td>
+<td style="text-align: right;">-0.1243158</td>
+<td style="text-align: right;">-0.1344315</td>
+<td style="text-align: right;">-0.1230724</td>
+<td style="text-align: right;">-0.1243964</td>
+<td style="text-align: right;">-0.1343305</td>
+<td style="text-align: right;">-0.1615824</td>
+<td style="text-align: right;">-0.1898014</td>
+<td style="text-align: right;">-0.1384775</td>
+<td style="text-align: right;">-0.4343566</td>
+<td style="text-align: right;">-0.1229872</td>
+<td style="text-align: right;">-0.1231672</td>
+<td style="text-align: right;">-0.2102087</td>
+<td style="text-align: right;">-0.1283373</td>
+<td style="text-align: right;">-0.1614732</td>
+<td style="text-align: right;">-0.2117309</td>
+<td style="text-align: right;">-0.2325615</td>
+<td style="text-align: right;">-0.1518574</td>
+<td style="text-align: right;">-0.2204329</td>
+<td style="text-align: right;">-0.2414132</td>
+<td style="text-align: right;">-0.1651923</td>
+<td style="text-align: right;">-0.2556649</td>
+<td style="text-align: right;">-0.1164057</td>
+<td style="text-align: right;">-0.1659071</td>
+<td style="text-align: right;">-0.1757865</td>
+<td style="text-align: right;">-0.2139592</td>
+<td style="text-align: right;">-0.1198</td>
+<td style="text-align: right;">-0.2219714</td>
+<td style="text-align: right;">-0.1826081</td>
+<td style="text-align: right;">-0.115462</td>
+<td style="text-align: right;">-0.2235752</td>
+<td style="text-align: right;">-0.1925122</td>
+<td style="text-align: right;">-0.120601</td>
+<td style="text-align: right;">-0.1636386</td>
+<td style="text-align: right;">-0.1215639</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.2537114</td>
+<td style="text-align: right;">-0.1208106</td>
+<td style="text-align: right;">-0.1768606</td>
+<td style="text-align: right;">-0.1233923</td>
+<td style="text-align: right;">-0.1719963</td>
+<td style="text-align: right;">-0.1361913</td>
+<td style="text-align: right;">-0.2179326</td>
+<td style="text-align: right;">-0.1833362</td>
+<td style="text-align: right;">-0.1171027</td>
+<td style="text-align: right;">-0.1391723</td>
+<td style="text-align: right;">-0.1812469</td>
+<td style="text-align: right;">-0.1992716</td>
+<td style="text-align: right;">-0.1261175</td>
+<td style="text-align: right;">-0.1426567</td>
+<td style="text-align: right;">-0.1542457</td>
+<td style="text-align: right;">-0.1361545</td>
+<td style="text-align: right;">-0.1786233</td>
+<td style="text-align: right;">-0.1956021</td>
+<td style="text-align: right;">-0.207215</td>
+<td style="text-align: right;">-0.1221246</td>
+<td style="text-align: right;">-0.1350533</td>
+<td style="text-align: right;">-0.1574835</td>
+<td style="text-align: right;">-0.1314802</td>
 </tr>
 </tbody>
 </table>
@@ -1984,22 +2077,22 @@ Centering and scaling for all_numeric_predictors()</code></pre>
 </div>
 </section>
 </section>
-<section id="recipe-1" class="level2">
-<h2 class="anchored" data-anchor-id="recipe-1">Recipe 1</h2>
-<p>As a baseline recipe we are going to refrain from using advanced methods for now and just focus on a “clean” text predictions. For this we use the following methods: Removal of german stop words, word stemming, Use of a tokenfilter (max. = 100) and normalization of all predictors. Furthermore we apply step_tfidf, which results in an inverse Document Frequency of our tokens.</p>
-<section id="defining-recipe-1" class="level3">
-<h3 class="anchored" data-anchor-id="defining-recipe-1">Defining recipe 1</h3>
+<section id="recipe-2" class="level2">
+<h2 class="anchored" data-anchor-id="recipe-2">Recipe 2</h2>
+<p>In this recipe we change <code>step_tf</code> to <code>step_tfidf</code>, which results in an inverse Document Frequency of our tokens.</p>
+<section id="defining-recipe-2" class="level3">
+<h3 class="anchored" data-anchor-id="defining-recipe-2">Defining recipe 2</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>rec1 <span class="ot">&lt;-</span> <span class="fu">recipe</span>(c1 <span class="sc">~</span> ., <span class="at">data =</span> <span class="fu">select</span>(d_train2, text, c1, id)) <span class="sc">%&gt;%</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text) <span class="sc">%&gt;%</span></span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stopwords</span>(text, <span class="at">language =</span> <span class="st">"de"</span>, <span class="at">stopword_source =</span> <span class="st">"snowball"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stem</span>(text) <span class="sc">%&gt;%</span></span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenfilter</span>(text, <span class="at">max_tokens =</span> <span class="fl">1e2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tfidf</span>(text) <span class="sc">%&gt;%</span></span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>rec1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>rec2 <span class="ot">&lt;-</span> <span class="fu">recipe</span>(c1 <span class="sc">~</span> ., <span class="at">data =</span> <span class="fu">select</span>(d_train2, text, c1, id)) <span class="sc">%&gt;%</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(id, <span class="at">new_role =</span> <span class="st">"id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text) <span class="sc">%&gt;%</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stopwords</span>(text, <span class="at">language =</span> <span class="st">"de"</span>, <span class="at">stopword_source =</span> <span class="st">"snowball"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stem</span>(text) <span class="sc">%&gt;%</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenfilter</span>(text, <span class="at">max_tokens =</span> <span class="fl">1e2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tfidf</span>(text) <span class="sc">%&gt;%</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>rec2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Recipe
 
@@ -2021,14 +2114,14 @@ Centering and scaling for all_numeric_predictors()</code></pre>
 </div>
 </div>
 </section>
-<section id="preparingbaking-recipe-1" class="level3">
-<h3 class="anchored" data-anchor-id="preparingbaking-recipe-1">Preparing/Baking recipe 1</h3>
+<section id="preparingbaking-recipe-2-1" class="level3">
+<h3 class="anchored" data-anchor-id="preparingbaking-recipe-2-1">Preparing/Baking recipe 2</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>rec1_prep <span class="ot">&lt;-</span> <span class="fu">prep</span>(rec1)</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>rec1_bake <span class="ot">&lt;-</span> <span class="fu">bake</span>(rec1_prep, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rec1_bake))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>rec2_prep <span class="ot">&lt;-</span> <span class="fu">prep</span>(rec2)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>rec2_bake <span class="ot">&lt;-</span> <span class="fu">bake</span>(rec2_prep, <span class="at">new_data =</span> <span class="cn">NULL</span>)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(rec2_bake))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <colgroup>
@@ -2878,12 +2971,11 @@ Centering and scaling for all_numeric_predictors()</code></pre>
 <section id="model-0" class="level2">
 <h2 class="anchored" data-anchor-id="model-0">Model 0</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>m_null <span class="ot">&lt;-</span> </span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  parsnip<span class="sc">::</span><span class="fu">null_model</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"parsnip"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>m_null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>m_null <span class="ot">&lt;-</span> <span class="fu">null_model</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"parsnip"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>m_null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Null Model Specification (classification)
 
@@ -2894,11 +2986,11 @@ Computational engine: parsnip </code></pre>
 <section id="model-1" class="level2">
 <h2 class="anchored" data-anchor-id="model-1">Model 1</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>m_nb <span class="ot">&lt;-</span> <span class="fu">naive_Bayes</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"naivebayes"</span>)</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>m_nb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>m_nb <span class="ot">&lt;-</span> <span class="fu">naive_Bayes</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"naivebayes"</span>)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>m_nb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Naive Bayes Model Specification (classification)
 
@@ -2906,8 +2998,8 @@ Computational engine: naivebayes </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">13</span>)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>cv_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(d_train_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">13</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>cv_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(d_train2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="mapping" class="level2">
@@ -2921,6 +3013,8 @@ Computational engine: naivebayes </code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Don't have an 'id' value NA
+Don't have an 'id' value NA
+Don't have an 'id' value NA
 Don't have an 'id' value NA</code></pre>
 </div>
 </div>
@@ -2929,25 +3023,43 @@ Don't have an 'id' value NA</code></pre>
 <pre><code>i   No tuning parameters. `fit_resamples()` will be attempted</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>i 1 of 2 resampling: recipe1_m_null</code></pre>
+<pre><code>i 1 of 4 resampling: recipe1_m_null</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Paket 'stopwords' wurde unter R Version 4.2.2 erstellt</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>✔ 1 of 2 resampling: recipe1_m_null (4.1s)</code></pre>
+<pre><code>✔ 1 of 4 resampling: recipe1_m_null (51.8s)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>i   No tuning parameters. `fit_resamples()` will be attempted</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>i 2 of 2 resampling: recipe1_m_nb</code></pre>
+<pre><code>i 2 of 4 resampling: recipe1_m_nb</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>✔ 2 of 2 resampling: recipe1_m_nb (6.5s)</code></pre>
+<pre><code>✔ 2 of 4 resampling: recipe1_m_nb (1m 3.1s)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i   No tuning parameters. `fit_resamples()` will be attempted</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i 3 of 4 resampling: recipe2_m_null</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ 3 of 4 resampling: recipe2_m_null (49.4s)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i   No tuning parameters. `fit_resamples()` will be attempted</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i 4 of 4 resampling: recipe2_m_nb</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ 4 of 4 resampling: recipe2_m_nb (54.9s)</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -2980,60 +3092,60 @@ Don't have an 'id' value NA</code></pre>
 <section id="workflow-1" class="level2">
 <h2 class="anchored" data-anchor-id="workflow-1">Workflow 1</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1 &lt;- workflow() %&gt;%</span></span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># add_recipe(rec1) %&gt;%</span></span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># add_model(nb_spec)</span></span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1 &lt;- workflow() %&gt;%</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># add_recipe(rec1) %&gt;%</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># add_model(nb_spec)</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="fit" class="level3">
 <h3 class="anchored" data-anchor-id="fit">Fit</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit1 &lt;- fit_resamples(wf1, cv_folds, control = control_resamples(save_pred = TRUE))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit1 &lt;- fit_resamples(wf1, cv_folds, control = control_resamples(save_pred = TRUE))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="performance" class="level3">
 <h3 class="anchored" data-anchor-id="performance">Performance</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1_performance &lt;- collect_metrics(fit1)</span></span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1_performance</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1_performance &lt;- collect_metrics(fit1)</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="co">#wf1_performance</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf_preds &lt;- collect_predictions(fit1)</span></span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="co">#wf_preds %&gt;%</span></span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># group_by(id) %&gt;%</span></span>
-<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a> <span class="co"># roc_curve(truth = c1, .pred_OFFENSE) %&gt;%</span></span>
-<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># autoplot()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf_preds &lt;- collect_predictions(fit1)</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co">#wf_preds %&gt;%</span></span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># group_by(id) %&gt;%</span></span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a> <span class="co"># roc_curve(truth = c1, .pred_OFFENSE) %&gt;%</span></span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># autoplot()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="nullmodell" class="level2">
 <h2 class="anchored" data-anchor-id="nullmodell">Nullmodell</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>null_classification <span class="ot">&lt;-</span> parsnip<span class="sc">::</span><span class="fu">null_model</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"parsnip"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>null_classification <span class="ot">&lt;-</span> <span class="fu">null_model</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"parsnip"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>folds1 <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(d_train2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>folds1 <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(d_train2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="resampling" class="level3">
 <h3 class="anchored" data-anchor-id="resampling">Resampling</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>null_rs <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(rec1) <span class="sc">%&gt;%</span></span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(null_classification) <span class="sc">%&gt;%</span></span>
-<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(folds1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>null_rs <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(rec1) <span class="sc">%&gt;%</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(null_classification) <span class="sc">%&gt;%</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(folds1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="performance-1" class="level3">
 <h3 class="anchored" data-anchor-id="performance-1">Performance</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>null_rs <span class="sc">%&gt;%</span></span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>null_rs <span class="sc">%&gt;%</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 6
   .metric  .estimator  mean     n std_err .config             
@@ -3041,7 +3153,7 @@ Don't have an 'id' value NA</code></pre>
 1 accuracy binary     0.656    10 0.00136 Preprocessor1_Model1
 2 roc_auc  binary     0.5      10 0       Preprocessor1_Model1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(null_rs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(null_rs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: No value of `metric` was given; metric 'roc_auc' will be used.</code></pre>
 </div>
@@ -3057,80 +3169,80 @@ Don't have an 'id' value NA</code></pre>
 <section id="workflow-2" class="level2">
 <h2 class="anchored" data-anchor-id="workflow-2">Workflow 2</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co">#doParallel::registerDoParallel()</span></span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co">#cores &lt;- parallel::detectCores(logical = TRUE)</span></span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="co">#lasso_spec &lt;- logistic_reg(penalty = tune(), mixture = 1) %&gt;%</span></span>
-<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># set_mode("classification") %&gt;%</span></span>
-<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a> <span class="co"># set_engine("glmnet", num.threads = cores)</span></span>
-<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a><span class="co">#lasso_spec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">#doParallel::registerDoParallel()</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co">#cores &lt;- parallel::detectCores(logical = TRUE)</span></span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="co">#lasso_spec &lt;- logistic_reg(penalty = tune(), mixture = 1) %&gt;%</span></span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># set_mode("classification") %&gt;%</span></span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a> <span class="co"># set_engine("glmnet", num.threads = cores)</span></span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a><span class="co">#lasso_spec</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lambda_grid &lt;- grid_regular(penalty(), levels = 30)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lambda_grid &lt;- grid_regular(penalty(), levels = 30)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2 &lt;- workflow() %&gt;%</span></span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_recipe(rec1) %&gt;%</span></span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_model(lasso_spec)</span></span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2 &lt;- workflow() %&gt;%</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_recipe(rec1) %&gt;%</span></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_model(lasso_spec)</span></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="tune-fit" class="level3">
 <h3 class="anchored" data-anchor-id="tune-fit">Tune &amp; Fit</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set.seed(2246)</span></span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="co">#tic()</span></span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2 &lt;- tune_grid(wf2, cv_folds, grid = lambda_grid, control = control_resamples(save_pred = TRUE))</span></span>
-<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a><span class="co">#toc()</span></span>
-<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set.seed(2246)</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="co">#tic()</span></span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2 &lt;- tune_grid(wf2, cv_folds, grid = lambda_grid, control = control_resamples(save_pred = TRUE))</span></span>
+<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a><span class="co">#toc()</span></span>
+<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-9"><a href="#cb96-9" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="performance-2" class="level3">
 <h3 class="anchored" data-anchor-id="performance-2">Performance</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co">#collect_metrics(fit2) %&gt;%</span></span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># filter(.metric == "roc_auc") %&gt;%</span></span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># slice_max(mean, n = 7)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co">#collect_metrics(fit2) %&gt;%</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># filter(.metric == "roc_auc") %&gt;%</span></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># slice_max(mean, n = 7)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co">#autoplot(fit2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co">#autoplot(fit2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2 %&gt;%</span></span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># show_best("roc_auc")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2 %&gt;%</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># show_best("roc_auc")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co">#chosen_auc &lt;- fit2 %&gt;%</span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># select_by_one_std_err(metric = "roc_auc", -penalty)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#chosen_auc &lt;- fit2 %&gt;%</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># select_by_one_std_err(metric = "roc_auc", -penalty)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="finalize" class="level3">
 <h3 class="anchored" data-anchor-id="finalize">Finalize</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2_final &lt;- finalize_workflow(wf2, chosen_auc)</span></span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2_final</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2_final &lt;- finalize_workflow(wf2, chosen_auc)</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co">#wf2_final</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_final_train &lt;- fit(wf2_final, d_train)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_final_train &lt;- fit(wf2_final, d_train)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_final_train %&gt;%</span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  extract_fit_parsnip() %&gt;%</span></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># tidy() %&gt;%</span></span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># arrange(-abs(estimate)) %&gt;%</span></span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a> <span class="co"># head()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_final_train %&gt;%</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  extract_fit_parsnip() %&gt;%</span></span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># tidy() %&gt;%</span></span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># arrange(-abs(estimate)) %&gt;%</span></span>
+<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a> <span class="co"># head()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_final_test &lt;- last_fit(wf2_final, d_split)</span></span>
-<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="co">#collect_metrics(fit2_final_test)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_final_test &lt;- last_fit(wf2_final, d_split)</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="co">#collect_metrics(fit2_final_test)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
